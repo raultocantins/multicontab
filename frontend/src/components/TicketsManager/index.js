@@ -7,6 +7,9 @@ import {
   Tab,
   Tabs,
   IconButton,
+  Button,
+  Switch,
+  FormControlLabel,
 } from "@material-ui/core";
 
 import { MoreVert, Search } from "@material-ui/icons";
@@ -17,7 +20,8 @@ import TabPanel from "../TabPanel";
 import { TagsFilter } from "../TagsFilter";
 import { i18n } from "../../translate/i18n";
 import { AuthContext } from "../../context/Auth/AuthContext";
-
+import { Can } from "../Can";
+import TicketsQueueSelect from "../TicketsQueueSelect";
 const useStyles = makeStyles((theme) => ({
   ticketsWrapper: {
     position: "relative",
@@ -112,7 +116,7 @@ const TicketsManager = () => {
   const [selectedTags, setSelectedTags] = useState([]);
 
   const userQueueIds = user.queues.map((q) => q.id);
-  const [selectedQueueIds] = useState(userQueueIds || []);
+  const [selectedQueueIds, setSelectedQueueIds] = useState(userQueueIds || []);
 
   useEffect(() => {
     if (user.profile.toUpperCase() === "ADMIN") {
@@ -211,7 +215,7 @@ const TicketsManager = () => {
           />
         </Tabs>
       </Paper>
-      {/* <Paper square elevation={0} className={classes.ticketOptionsBox}>
+      <Paper square elevation={0} className={classes.ticketOptionsBox}>
         <Button
           variant="contained"
           color="primary"
@@ -245,7 +249,7 @@ const TicketsManager = () => {
           userQueues={user?.queues}
           onChange={(values) => setSelectedQueueIds(values)}
         />
-      </Paper> */}
+      </Paper>
       <TabPanel value={tab} name="open" className={classes.ticketsWrapper}>
         <Paper className={classes.ticketsWrapper}>
           <TicketsList
