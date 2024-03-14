@@ -195,6 +195,7 @@ const TicketsManager = () => {
             classes={{ root: classes.tab }}
           />
           <Tab
+            value={"pending"}
             label={
               <Badge
                 className={classes.badge}
