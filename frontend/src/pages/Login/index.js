@@ -38,12 +38,6 @@ const Copyright = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  // paper: {
-  //   marginTop: theme.spacing(8),
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   alignItems: "center",
-  // },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -54,6 +48,14 @@ const useStyles = makeStyles((theme) => ({
   boxFormLogin: {
     background: theme.palette.background.default,
     padding: theme.spacing(5, 3, 2),
+  },
+  background: {
+    backgroundImage: `url(${logo})`,
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    display: "flex",
+    justifyContent: "flex-end",
+    backgroundColor: theme.palette.background.default,
   },
 }));
 
@@ -75,15 +77,7 @@ const Login = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${logo})`,
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        display: "flex",
-        justifyContent: "flex-end",
-      }}
-    >
+    <div className={classes.background}>
       <CssBaseline />
       <div
         style={{ height: "100vh", width: 400 }}

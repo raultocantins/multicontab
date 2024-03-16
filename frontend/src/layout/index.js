@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       height: "calc(100vh - 56px)",
     },
+    background: theme.palette.background.default,
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed

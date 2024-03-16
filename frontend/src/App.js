@@ -7,28 +7,58 @@ import { ptBR } from "@material-ui/core/locale";
 
 import { CssBaseline } from "@material-ui/core";
 
-import api from "./services/api";
-import toastError from "./errors/toastError";
-
 import lightBackground from "./assets/wa-background-light.png";
 import darkBackground from "./assets/wa-background-dark.jpg";
 import { system } from "./config.json";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 const App = () => {
   const [locale, setLocale] = useState();
-
+  const [storedValue] = useLocalStorage("theme", { theme: "light" });
   const lightTheme = createTheme(
     {
-      scrollbarStyles: {
-        "&::-webkit-scrollbar": {
-          width: "1px",
-          height: "1px",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)",
-          backgroundColor: "#e8e8e8",
+      overrides: {
+        MuiCssBaseline: {
+          "@global": {
+            body: {
+              backgroundColor: "transparent",
+              "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+                backgroundColor: "transparent",
+                width: 3,
+              },
+              "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+                backgroundColor: system.color.lightTheme.palette.primary,
+
+                width: 3,
+              },
+              "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
+                {
+                  backgroundColor: system.color.lightTheme.palette.primary,
+
+                  width: 3,
+                },
+              "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
+                {
+                  backgroundColor: system.color.lightTheme.palette.primary,
+
+                  width: 3,
+                },
+              "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
+                {
+                  backgroundColor: system.color.lightTheme.palette.primary,
+
+                  width: 3,
+                },
+              "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
+                backgroundColor: system.color.lightTheme.palette.primary,
+
+                width: 3,
+              },
+            },
+          },
         },
       },
+
       palette: {
         primary: { main: system.color.lightTheme.palette.primary || "#6B62FE" },
         secondary: {
@@ -53,21 +83,44 @@ const App = () => {
         MuiCssBaseline: {
           "@global": {
             body: {
-              backgroundColor: "#080d14",
+              backgroundColor: "transparent",
+              "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+                backgroundColor: "transparent",
+                width: 3,
+              },
+              "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+                backgroundColor: system.color.darkTheme.palette.primary,
+
+                width: 3,
+              },
+              "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
+                {
+                  backgroundColor: system.color.darkTheme.palette.primary,
+
+                  width: 3,
+                },
+              "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
+                {
+                  backgroundColor: system.color.darkTheme.palette.primary,
+
+                  width: 3,
+                },
+              "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
+                {
+                  backgroundColor: system.color.darkTheme.palette.primary,
+
+                  width: 3,
+                },
+              "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
+                backgroundColor: system.color.darkTheme.palette.primary,
+
+                width: 3,
+              },
             },
           },
         },
       },
-      scrollbarStyles: {
-        "&::-webkit-scrollbar": {
-          width: "8px",
-          height: "8px",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)",
-          backgroundColor: "#ffffff",
-        },
-      },
+
       palette: {
         primary: { main: system.color.darkTheme.palette.primary || "#52d869" },
         secondary: {
@@ -98,22 +151,8 @@ const App = () => {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    const fetchDarkMode = async () => {
-      try {
-        const { data } = await api.get("/settings");
-        const settingIndex = data.filter((s) => s.key === "darkMode");
-
-        if (settingIndex[0].value === "enabled") {
-          setTheme("dark");
-        }
-      } catch (err) {
-        setTheme("light");
-        toastError(err);
-      }
-    };
-
-    fetchDarkMode();
-  }, []);
+    setTheme(storedValue.theme);
+  }, [storedValue]);
 
   useEffect(() => {
     const i18nlocale = localStorage.getItem("i18nextLng");

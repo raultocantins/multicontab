@@ -8,21 +8,19 @@ import {
   MenuItem,
   makeStyles,
   Menu,
+  Switch,
+  CssBaseline,
 } from "@material-ui/core";
 
 import {
   AccountTree,
-  Code,
-  DeveloperMode,
   InsertChart,
   Label,
-  MenuBook,
   PeopleAlt,
   QuestionAnswer,
   RecentActors,
   Settings,
   SignalCellular4Bar,
-  VpnKeyRounded,
   WhatsApp,
 } from "@material-ui/icons";
 
@@ -35,6 +33,8 @@ import { Can } from "../components/Can";
 import UserModal from "../components/UserModal";
 import NotificationsPopOver from "../components/NotificationsPopOver";
 import { useLocation } from "react-router-dom/cjs/react-router-dom";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -62,7 +62,6 @@ function ListItemLink(props) {
   const { icon, to, label } = props;
   const classes = useStyles();
   const location = useLocation();
-
   const renderLink = React.useMemo(
     () =>
       React.forwardRef((itemProps, ref) => (
@@ -95,6 +94,7 @@ function ListItemLink(props) {
 }
 
 const MainListItems = (props) => {
+  const history = useHistory();
   const { drawerClose } = props;
   const { whatsApps } = useContext(WhatsAppsContext);
   const { user } = useContext(AuthContext);
@@ -104,6 +104,7 @@ const MainListItems = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const { handleLogout } = useContext(AuthContext);
+  const [storedValue, setValue] = useLocalStorage("theme", { theme: "light" });
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (whatsApps.length > 0) {
@@ -147,6 +148,7 @@ const MainListItems = (props) => {
 
   return (
     <div onClick={drawerClose}>
+      <CssBaseline />
       <li className={classes.li}>
         <ListItem
           button
@@ -221,6 +223,7 @@ const MainListItems = (props) => {
         icon={<Label />}
         label="Tags"
       />
+
       <Can
         role={user.profile}
         perform="drawer-admin-items:view"
@@ -252,40 +255,42 @@ const MainListItems = (props) => {
               icon={<AccountTree />}
               label="Departamentos"
             />
-            <ListItemLink
-              to="/Integrations"
-              primary={i18n.t("mainDrawer.listItems.integrations")}
-              icon={<DeveloperMode />}
-              label="Integrações"
-            />
+
             <ListItemLink
               to="/settings"
               primary={i18n.t("mainDrawer.listItems.settings")}
               icon={<Settings />}
               label="Configurações"
             />
-
-            <ListItemLink
-              to="/api"
-              primary={i18n.t("mainDrawer.listItems.api")}
-              icon={<Code />}
-              label="Api"
-            />
-            <ListItemLink
-              to="/apidocs"
-              primary={i18n.t("mainDrawer.listItems.apidocs")}
-              icon={<MenuBook />}
-              label="Documentação"
-            />
-            <ListItemLink
-              to="/apikey"
-              primary={i18n.t("mainDrawer.listItems.apikey")}
-              label="Chave Api"
-              icon={<VpnKeyRounded />}
-            />
           </>
         )}
       />
+
+      <ListItem
+        button
+        style={{
+          flexDirection: "column",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <ListItemIcon className={classes.icon} style={{ fontSize: 32 }}>
+          <Switch
+            size="small"
+            checked={storedValue.theme === "dark" ? true : false}
+            onChange={(_) => {
+              setValue({
+                theme: storedValue.theme === "dark" ? "light" : "dark",
+              });
+              history.go(0);
+            }}
+            name="darkMode"
+          />
+        </ListItemIcon>
+
+        <span style={{ fontSize: 8 }}>Modo Escuro</span>
+      </ListItem>
+
       <UserModal
         open={userModalOpen}
         onClose={() => setUserModalOpen(false)}
