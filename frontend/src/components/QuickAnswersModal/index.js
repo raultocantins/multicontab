@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { toast } from "react-toastify";
 import WithSkeleton from "../WithSkeleton";
 import MessageVariablesPicker from "../MessageVariablesPicker";
 import ButtonWithSpinner from "../ButtonWithSpinner";
@@ -14,21 +13,22 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
 } from "@material-ui/core";
 import { i18n } from "../../translate/i18n";
 
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
+import ToastSuccess from "../ToastSuccess";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexWrap: "wrap",
     "& > *:not(:last-child)": {
-      marginRight: theme.spacing(1)
-    }
-  }
+      marginRight: theme.spacing(1),
+    },
+  },
 }));
 
 const QuickAnswerSchema = Yup.object().shape({
@@ -47,7 +47,7 @@ const QuickAnswersModal = ({
   onClose,
   onSave,
   quickAnswerId,
-  initialValues
+  initialValues,
 }) => {
   const classes = useStyles();
 
@@ -63,40 +63,40 @@ const QuickAnswersModal = ({
 
   useEffect(() => {
     return () => {
-      isMounted.current = false; 
+      isMounted.current = false;
     };
   }, []);
 
   useEffect(() => {
     if (initialValues && isMounted.current) {
-      setQuickAnswer(prevState => {
-        return { ...prevState, ...initialValues  };
+      setQuickAnswer((prevState) => {
+        return { ...prevState, ...initialValues };
       });
     }
 
-(async () => {
-      if (!quickAnswerId) return ;
-      
+    (async () => {
+      if (!quickAnswerId) return;
+
       setLoading(true);
       try {
         const { data } = await api.get(`/quickAnswers/${quickAnswerId}`);
-                if (!isMounted.current) return; 
+        if (!isMounted.current) return;
 
-        setQuickAnswer(prevState => {
+        setQuickAnswer((prevState) => {
           return { ...prevState, ...data };
         });
-        
+
         setLoading(false);
       } catch (err) {
         setLoading(false);
         toastError(err);
-      }       
-    })();    
+      }
+    })();
     setQuickAnswer(initialState);
     // eslint-disable-next-line
   }, [quickAnswerId, open, initialValues]);
 
-  const handleSaveQuickAnswer = async values => {
+  const handleSaveQuickAnswer = async (values) => {
     try {
       if (quickAnswerId) {
         await api.put(`/quickAnswers/${quickAnswerId}`, values);
@@ -108,7 +108,7 @@ const QuickAnswersModal = ({
         }
         onClose();
       }
-      toast.success(i18n.t("quickAnswersModal.success"));
+      ToastSuccess(i18n.t("quickAnswersModal.success"));
     } catch (err) {
       toastError(err);
     }
@@ -122,7 +122,7 @@ const QuickAnswersModal = ({
 
     setValueFunc("message", `${firstHalfText}${msgVar}${secondHalfText}`);
 
-    await new Promise(r => setTimeout(r, 100));
+    await new Promise((r) => setTimeout(r, 100));
     messageInputRef.current.setSelectionRange(newCursorPos, newCursorPos);
   };
 
@@ -179,15 +179,12 @@ const QuickAnswersModal = ({
                 <WithSkeleton loading={loading}>
                   <MessageVariablesPicker
                     disabled={isSubmitting}
-                    onClick={value => handleClickMsgVar(value, setFieldValue)}
+                    onClick={(value) => handleClickMsgVar(value, setFieldValue)}
                   />
                 </WithSkeleton>
               </DialogContent>
               <DialogActions>
-                <Button
-                onClick={onClose}
-                disabled={isSubmitting}
-                >
+                <Button onClick={onClose} disabled={isSubmitting}>
                   {i18n.t("quickAnswersModal.buttons.cancel")}
                 </Button>
                 <ButtonWithSpinner
@@ -199,7 +196,7 @@ const QuickAnswersModal = ({
                 >
                   {quickAnswerId
                     ? i18n.t("quickAnswersModal.buttons.okEdit")
-                    : i18n.t("quickAnswersModal.buttons.okAdd")}                  
+                    : i18n.t("quickAnswersModal.buttons.okAdd")}
                 </ButtonWithSpinner>
               </DialogActions>
             </Form>

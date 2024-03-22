@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
-import { toast } from "react-toastify";
 import openSocket from "../../services/socket-io";
 import clsx from "clsx";
 
@@ -16,6 +15,7 @@ import MessagesList from "../MessagesList";
 import api from "../../services/api";
 import { ReplyMessageProvider } from "../../context/ReplyingMessage/ReplyingMessageContext";
 import toastError from "../../errors/toastError";
+import ToastSuccess from "../ToastSuccess";
 
 const drawerWidth = 320;
 
@@ -116,7 +116,7 @@ const Ticket = () => {
       }
 
       if (data.action === "delete") {
-        toast.success("Ticket deleted sucessfully.");
+        ToastSuccess("Ticket deleted sucessfully.");
         history.push("/tickets");
       }
     });
@@ -162,14 +162,17 @@ const Ticket = () => {
               onClick={handleDrawerOpen}
             />
           </div>
+
           <div className={classes.ticketActionButtons}>
             <TicketActionButtons ticket={ticket} />
           </div>
         </TicketHeader>
+
         <ReplyMessageProvider>
           <MessagesList
             ticketId={ticketId}
             isGroup={ticket.isGroup}
+            tags={contact.tags ?? []}
           ></MessagesList>
           <MessageInput ticketStatus={ticket.status} />
         </ReplyMessageProvider>

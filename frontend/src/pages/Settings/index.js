@@ -13,6 +13,7 @@ import Integrations from "../Integrations";
 import Api from "../Api";
 import ApiDocs from "../ApiDocs";
 import SettingsKey from "../ApiKey/";
+import Options from "./options";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -83,6 +84,7 @@ const Settings = () => {
             <Tab label="Integrações" {...a11yProps(1)} />
             <Tab label="Documentação" {...a11yProps(2)} />
             <Tab label="Chave Api" {...a11yProps(3)} />
+            <Tab label="Opções" {...a11yProps(4)} />
           </Tabs>
         </Box>
       </Box>
@@ -99,6 +101,9 @@ const Settings = () => {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
           <SettingsKey />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={4}>
+          <Options />
         </CustomTabPanel>
       </div>
     </Container>

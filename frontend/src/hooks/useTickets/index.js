@@ -35,7 +35,6 @@ const useTickets = ({
             },
           });
           setTickets(data.tickets);
-
           let horasFecharAutomaticamente = getHoursCloseTicketsAuto();
 
           if (

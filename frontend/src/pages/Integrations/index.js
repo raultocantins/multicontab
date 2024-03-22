@@ -9,10 +9,10 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import { toast } from "react-toastify";
 import api from "../../services/api";
 import { i18n } from "../../translate/i18n.js";
 import toastError from "../../errors/toastError";
+import ToastSuccess from "../../components/ToastSuccess/index.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,7 +74,7 @@ const Integrations = () => {
       await api.put(`/integrations/${integrationKey}`, {
         value: selectedValue,
       });
-      toast.success(i18n.t("integrations.success"));
+      ToastSuccess(i18n.t("integrations.success"));
     } catch (err) {
       toastError(err);
     }

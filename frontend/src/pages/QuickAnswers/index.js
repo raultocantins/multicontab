@@ -14,14 +14,14 @@ import {
   TableRow,
   InputAdornment,
   TextField,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 import {
   AddCircleOutline,
   DeleteForever,
   DeleteOutline,
   Edit,
-  Search
+  Search,
 } from "@material-ui/icons";
 
 import api from "../../services/api";
@@ -35,8 +35,8 @@ import TableRowSkeleton from "../../components/TableRowSkeleton";
 import QuickAnswersModal from "../../components/QuickAnswersModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 
-import { toast } from "react-toastify";
 import toastError from "../../errors/toastError";
+import ToastSuccess from "../../components/ToastSuccess";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_QUICK_ANSWERS") {
@@ -175,7 +175,7 @@ const QuickAnswers = () => {
   const handleDeleteQuickAnswers = async (quickAnswerId) => {
     try {
       await api.delete(`/quickAnswers/${quickAnswerId}`);
-      toast.success(i18n.t("quickAnswers.toasts.deleted"));
+      ToastSuccess(i18n.t("quickAnswers.toasts.deleted"));
     } catch (err) {
       toastError(err);
     }
@@ -187,7 +187,7 @@ const QuickAnswers = () => {
   const handleDeleteAllQuickAnswers = async () => {
     try {
       await api.delete("/quickAnswers");
-      toast.success(i18n.t("quickAnswers.toasts.deletedAll"));
+      ToastSuccess(i18n.t("quickAnswers.toasts.deletedAll"));
       history.go(0);
     } catch (err) {
       toastError(err);
@@ -213,20 +213,23 @@ const QuickAnswers = () => {
     <MainContainer>
       <ConfirmationModal
         title={
-          deletingQuickAnswers ? `${i18n.t("quickAnswers.confirmationModal.deleteTitle")} ${deletingQuickAnswers.shortcut}?`
-          : `${i18n.t("quickAnswers.confirmationModal.deleteAllTitle")}`
+          deletingQuickAnswers
+            ? `${i18n.t("quickAnswers.confirmationModal.deleteTitle")} ${
+                deletingQuickAnswers.shortcut
+              }?`
+            : `${i18n.t("quickAnswers.confirmationModal.deleteAllTitle")}`
         }
         open={confirmModalOpen}
         onClose={setConfirmModalOpen}
-        onConfirm={() => 
-          deletingQuickAnswers ? handleDeleteQuickAnswers(deletingQuickAnswers.id)
-         : handleDeleteAllQuickAnswers(deletingAllQuickAnswers)
+        onConfirm={() =>
+          deletingQuickAnswers
+            ? handleDeleteQuickAnswers(deletingQuickAnswers.id)
+            : handleDeleteAllQuickAnswers(deletingAllQuickAnswers)
         }
       >
-        {
-          deletingQuickAnswers ? `${i18n.t("quickAnswers.confirmationModal.deleteMessage")}`
-            : `${i18n.t("quickAnswers.confirmationModal.deleteAllMessage")}`
-        }
+        {deletingQuickAnswers
+          ? `${i18n.t("quickAnswers.confirmationModal.deleteMessage")}`
+          : `${i18n.t("quickAnswers.confirmationModal.deleteAllMessage")}`}
       </ConfirmationModal>
       <QuickAnswersModal
         open={quickAnswersModalOpen}
@@ -235,7 +238,9 @@ const QuickAnswers = () => {
         quickAnswerId={selectedQuickAnswers && selectedQuickAnswers.id}
       ></QuickAnswersModal>
       <MainHeader>
-        <Title>{i18n.t("quickAnswers.title")} ({quickAnswers.length})</Title>
+        <Title>
+          {i18n.t("quickAnswers.title")} ({quickAnswers.length})
+        </Title>
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("quickAnswers.searchPlaceholder")}
@@ -323,7 +328,7 @@ const QuickAnswers = () => {
           </TableBody>
         </Table>
       </Paper>
-    </MainContainer >
+    </MainContainer>
   );
 };
 

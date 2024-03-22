@@ -29,7 +29,7 @@ import Title from "../../components/Title";
 import { i18n } from "../../translate/i18n";
 import toastError from "../../errors/toastError";
 import api from "../../services/api";
-import { toast } from "react-toastify";
+import ToastSuccess from "../../components/ToastSuccess";
 
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
@@ -155,7 +155,7 @@ const Queues = () => {
   const handleDeleteQueue = async (queueId) => {
     try {
       await api.delete(`/queue/${queueId}`);
-      toast.success(i18n.t("queues.notifications.queueDeleted"));
+      ToastSuccess(i18n.t("queues.notifications.queueDeleted"));
     } catch (err) {
       toastError(err);
     }

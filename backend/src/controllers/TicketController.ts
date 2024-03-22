@@ -10,6 +10,7 @@ import SendWhatsAppMessage from "../services/WbotServices/SendWhatsAppMessage";
 import ShowWhatsAppService from "../services/WhatsappService/ShowWhatsAppService";
 import ShowQueueService from "../services/QueueService/ShowQueueService";
 import formatBody from "../helpers/Mustache";
+import ListTicketsDashService from "../services/TicketServices/ListTicketsDashService";
 
 type IndexQuery = {
   searchParam: string;
@@ -19,6 +20,10 @@ type IndexQuery = {
   showAll: string;
   withUnreadMessages: string;
   queueIds: string;
+};
+type IndexQueryDash = {
+  dateRange?: string[];
+  queueId?: string;
 };
 
 interface TicketData {
@@ -134,13 +139,24 @@ export const remove = async (
   const ticket = await DeleteTicketService(ticketId);
 
   const io = getIO();
-  io.to(ticket.status)
-    .to(ticketId)
-    .to("notification")
-    .emit("ticket", {
-      action: "delete",
-      ticketId: +ticketId
-    });
+  io.to(ticket.status).to(ticketId).to("notification").emit("ticket", {
+    action: "delete",
+    ticketId: +ticketId
+  });
 
   return res.status(200).json({ message: "ticket deleted" });
+};
+
+export const indexDash = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { dateRange, queueId } = req.query as IndexQueryDash;
+
+  const { tickets } = await ListTicketsDashService({
+    dateRange,
+    queueId
+  });
+
+  return res.status(200).json({ tickets });
 };

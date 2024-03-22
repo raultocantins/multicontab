@@ -8,6 +8,7 @@ import Queue from "../../models/Queue";
 import Whatsapp from "../../models/Whatsapp";
 import ShowUserService from "../UserServices/ShowUserService";
 import ListSettingsServiceOne from "../SettingServices/ListSettingsServiceOne";
+import User from "../../models/User";
 
 interface Request {
   searchParam?: string;
@@ -48,6 +49,11 @@ const ListTicketsService = async ({
       as: "contact",
       attributes: ["id", "name", "number", "profilePicUrl"]
       // include: ["extraInfo", "contactTags", "tags"]
+    },
+    {
+      model: User,
+      as: "user",
+      attributes: ["id", "name"]
     },
     {
       model: Queue,
@@ -133,6 +139,11 @@ const ListTicketsService = async ({
       unreadMessages: { [Op.gt]: 0 }
     };
   }
+
+  whereCondition = {
+    ...whereCondition,
+    isGroup: { [Op.is]: false }
+  };
 
   const limit = 100;
   const offset = limit * (+pageNumber - 1);

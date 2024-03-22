@@ -5,6 +5,7 @@ import DeleteQueueService from "../services/QueueService/DeleteQueueService";
 import ListQueuesService from "../services/QueueService/ListQueuesService";
 import ShowQueueService from "../services/QueueService/ShowQueueService";
 import UpdateQueueService from "../services/QueueService/UpdateQueueService";
+import ListQueuesDashService from "../services/QueueService/ListQueuesDashService";
 
 export const index = async (req: Request, res: Response): Promise<Response> => {
   const queues = await ListQueuesService();
@@ -13,9 +14,17 @@ export const index = async (req: Request, res: Response): Promise<Response> => {
 };
 
 export const store = async (req: Request, res: Response): Promise<Response> => {
-  const { name, color, greetingMessage, startWork, endWork, absenceMessage } = req.body;
+  const { name, color, greetingMessage, startWork, endWork, absenceMessage } =
+    req.body;
 
-  const queue = await CreateQueueService({ name, color, greetingMessage, startWork, endWork, absenceMessage });
+  const queue = await CreateQueueService({
+    name,
+    color,
+    greetingMessage,
+    startWork,
+    endWork,
+    absenceMessage
+  });
 
   const io = getIO();
   io.emit("queue", {
@@ -66,4 +75,12 @@ export const remove = async (
   });
 
   return res.status(200).send();
+};
+export const indexDash = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const queues = await ListQueuesDashService();
+
+  return res.status(200).json(queues);
 };

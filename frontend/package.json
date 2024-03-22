@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "systemVersion": "1.7.1",
   "private": true,
   "dependencies": {
@@ -11,8 +11,10 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^12.1.7",
+    "@wojtekmaj/react-daterange-picker": "^5.5.0",
     "axios": "^0.21.1",
-    "date-fns": "^2.16.1",
+    "date-fns": "^2.30.0",
+    "echarts-for-react": "^3.0.2",
     "emoji-mart": "^3.0.1",
     "formik": "^2.2.0",
     "i18next": "^19.8.2",

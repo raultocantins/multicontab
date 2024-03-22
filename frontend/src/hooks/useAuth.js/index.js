@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import openSocket from "../../services/socket-io";
 
-import { toast } from "react-toastify";
-
 import { i18n } from "../../translate/i18n";
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
+import ToastSuccess from "../../components/ToastSuccess";
 
 const useAuth = () => {
   const history = useHistory();
@@ -93,7 +92,7 @@ const useAuth = () => {
       api.defaults.headers.Authorization = `Bearer ${data.token}`;
       setUser(data.user);
       setIsAuth(true);
-      toast.success(i18n.t("auth.toasts.success"));
+      ToastSuccess(i18n.t("auth.toasts.success"));
       history.push("/");
       setLoading(false);
     } catch (err) {

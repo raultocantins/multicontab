@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer } from "react";
-import { toast } from "react-toastify";
 import openSocket from "../../services/socket-io";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -14,14 +13,14 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 
 import {
   AddCircleOutline,
   DeleteOutline,
   Edit,
-  Search
+  Search,
 } from "@material-ui/icons";
 
 import MainContainer from "../../components/MainContainer";
@@ -34,6 +33,7 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import api from "../../services/api";
 import { i18n } from "../../translate/i18n";
 import toastError from "../../errors/toastError";
+import ToastSuccess from "../../components/ToastSuccess";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_USERS") {
@@ -167,7 +167,7 @@ const Users = () => {
   const handleDeleteUser = async (userId) => {
     try {
       await api.delete(`/users/${userId}`);
-      toast.success(i18n.t("users.toasts.deleted"));
+      ToastSuccess(i18n.t("users.toasts.deleted"));
     } catch (err) {
       toastError(err);
     }
@@ -193,7 +193,8 @@ const Users = () => {
       <ConfirmationModal
         title={
           deletingUser &&
-          `${i18n.t("users.confirmationModal.deleteTitle")} ${deletingUser.name
+          `${i18n.t("users.confirmationModal.deleteTitle")} ${
+            deletingUser.name
           }?`
         }
         open={confirmModalOpen}
@@ -209,7 +210,9 @@ const Users = () => {
         userId={selectedUser && selectedUser.id}
       />
       <MainHeader>
-        <Title>{i18n.t("users.title")} ({users.length})</Title>
+        <Title>
+          {i18n.t("users.title")} ({users.length})
+        </Title>
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("contacts.searchPlaceholder")}
@@ -243,12 +246,8 @@ const Users = () => {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell align="center">
-                {i18n.t("users.table.id")}
-              </TableCell>
-              <TableCell align="center">
-                {i18n.t("users.table.name")}
-              </TableCell>
+              <TableCell align="center">{i18n.t("users.table.id")}</TableCell>
+              <TableCell align="center">{i18n.t("users.table.name")}</TableCell>
               <TableCell align="center">
                 {i18n.t("users.table.email")}
               </TableCell>

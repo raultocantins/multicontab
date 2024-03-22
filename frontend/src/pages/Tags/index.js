@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer, useCallback } from "react";
-import { toast } from "react-toastify";
 import openSocket from "socket.io-client";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,7 +13,7 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 
 import {
@@ -22,7 +21,7 @@ import {
   DeleteForever,
   DeleteOutline,
   Edit,
-  Search
+  Search,
 } from "@material-ui/icons";
 
 import MainContainer from "../../components/MainContainer";
@@ -36,6 +35,7 @@ import TableRowSkeleton from "../../components/TableRowSkeleton";
 import TagModal from "../../components/TagModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
+import ToastSuccess from "../../components/ToastSuccess";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_TAGS") {
@@ -176,7 +176,7 @@ const Tags = () => {
   const handleDeleteTag = async (tagId) => {
     try {
       await api.delete(`/tags/${tagId}`);
-      toast.success(i18n.t("tags.toasts.deleted"));
+      ToastSuccess(i18n.t("tags.toasts.deleted"));
     } catch (err) {
       toastError(err);
     }
@@ -192,7 +192,7 @@ const Tags = () => {
   const handleDeleteAllTags = async () => {
     try {
       await api.delete(`/tags`);
-      toast.success(i18n.t("tags.toasts.deletedAll"));
+      ToastSuccess(i18n.t("tags.toasts.deletedAll"));
     } catch (err) {
       toastError(err);
     }
@@ -221,20 +221,21 @@ const Tags = () => {
     <MainContainer>
       <ConfirmationModal
         title={
-          deletingTag ? `${i18n.t("tags.confirmationModal.deleteTitle")}`
-          : `${i18n.t("tags.confirmationModal.deleteAllTitle")}`
+          deletingTag
+            ? `${i18n.t("tags.confirmationModal.deleteTitle")}`
+            : `${i18n.t("tags.confirmationModal.deleteAllTitle")}`
         }
         open={confirmModalOpen}
         onClose={setConfirmModalOpen}
-        onConfirm={() => 
-          deletingTag ? handleDeleteTag(deletingTag.id)
-         : handleDeleteAllTags(deletingAllTags)
+        onConfirm={() =>
+          deletingTag
+            ? handleDeleteTag(deletingTag.id)
+            : handleDeleteAllTags(deletingAllTags)
         }
       >
-        {
-          deletingTag ? `${i18n.t("tags.confirmationModal.deleteMessage")}`
-            : `${i18n.t("tags.confirmationModal.deleteAllMessage")}`
-        }
+        {deletingTag
+          ? `${i18n.t("tags.confirmationModal.deleteMessage")}`
+          : `${i18n.t("tags.confirmationModal.deleteAllMessage")}`}
       </ConfirmationModal>
       <TagModal
         open={tagModalOpen}
@@ -244,7 +245,9 @@ const Tags = () => {
         tagId={selectedTag && selectedTag.id}
       />
       <MainHeader>
-        <Title >{i18n.t("tags.title")} ({tags.length})</Title>
+        <Title>
+          {i18n.t("tags.title")} ({tags.length})
+        </Title>
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("contacts.searchPlaceholder")}
@@ -292,17 +295,19 @@ const Tags = () => {
             <TableRow>
               <TableCell align="center">{i18n.t("tags.table.name")}</TableCell>
               <TableCell align="center">{i18n.t("tags.table.color")}</TableCell>
-              <TableCell align="center">{i18n.t("tags.table.contacts")}</TableCell>
-              <TableCell align="center">{i18n.t("tags.table.actions")}</TableCell>
+              <TableCell align="center">
+                {i18n.t("tags.table.contacts")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("tags.table.actions")}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <>
               {tags.map((tag) => (
                 <TableRow key={tag.id}>
-                  <TableCell align="center">
-                    {tag.name}
-                  </TableCell>
+                  <TableCell align="center">{tag.name}</TableCell>
                   <TableCell align="center">
                     <div className={classes.customTableCell}>
                       <span
@@ -311,18 +316,21 @@ const Tags = () => {
                           width: 20,
                           height: 20,
                           alignSelf: "center",
-                          borderRadius: 10
+                          borderRadius: 10,
                         }}
                       />
                     </div>
                   </TableCell>
-                  <TableCell align="center">{tag.contacttag.length ? (<span>{tag.contacttag.length}</span>) : <span>0</span>}</TableCell>
                   <TableCell align="center">
-                    <IconButton
-                      size="small"
-                      onClick={() => handleEditTag(tag)}
-                    >
-                      <Edit color="secondary"/>
+                    {tag.contacttag.length ? (
+                      <span>{tag.contacttag.length}</span>
+                    ) : (
+                      <span>0</span>
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton size="small" onClick={() => handleEditTag(tag)}>
+                      <Edit color="secondary" />
                     </IconButton>
 
                     <IconButton
@@ -332,7 +340,7 @@ const Tags = () => {
                         setDeletingTag(tag);
                       }}
                     >
-                      <DeleteOutline color="secondary"/>
+                      <DeleteOutline color="secondary" />
                     </IconButton>
                   </TableCell>
                 </TableRow>

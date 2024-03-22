@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
 import openSocket from "../../services/socket-io";
-import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { CSVLink } from "react-csv";
 
@@ -47,6 +46,7 @@ import NewTicketModalPageContact from "../../components/NewTicketModalPageContac
 
 import toastError from "../../errors/toastError";
 import { AuthContext } from "../../context/Auth/AuthContext";
+import ToastSuccess from "../../components/ToastSuccess";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_CONTACTS") {
@@ -200,7 +200,7 @@ const Contacts = () => {
   const handleDeleteContact = async (contactId) => {
     try {
       await api.delete(`/contacts/${contactId}`);
-      toast.success(i18n.t("contacts.toasts.deleted"));
+      ToastSuccess(i18n.t("contacts.toasts.deleted"));
     } catch (err) {
       toastError(err);
     }
@@ -212,7 +212,7 @@ const Contacts = () => {
   const handleDeleteAllContact = async () => {
     try {
       await api.delete("/contacts");
-      toast.success(i18n.t("contacts.toasts.deletedAll"));
+      ToastSuccess(i18n.t("contacts.toasts.deletedAll"));
       history.go(0);
     } catch (err) {
       toastError(err);
@@ -242,8 +242,6 @@ const Contacts = () => {
       loadMore();
     }
   };
-
-  console.log("USER", user.profile);
 
   return (
     <MainContainer className={classes.mainContainer}>
