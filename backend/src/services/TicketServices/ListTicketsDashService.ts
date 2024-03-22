@@ -19,9 +19,9 @@ const ListTicketsDashService = async ({
   dateRange
 }: Request): Promise<Response> => {
   let whereCondition: Filterable["where"];
-  if (queueId !== "") {
+  if (queueId !== "" && queueId !== null) {
     whereCondition = {
-      queueId
+      queueId: queueId!
     };
   }
   let includeCondition: Includeable[];
@@ -58,7 +58,7 @@ const ListTicketsDashService = async ({
 
   whereCondition = {
     ...whereCondition,
-    isGroup: { [Op.is]: false }
+    isGroup: { [Op.or]: [false, null] }
   };
 
   const { rows: tickets } = await Ticket.findAndCountAll({

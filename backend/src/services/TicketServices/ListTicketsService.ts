@@ -140,11 +140,6 @@ const ListTicketsService = async ({
     };
   }
 
-  whereCondition = {
-    ...whereCondition,
-    isGroup: { [Op.is]: false }
-  };
-
   const limit = 100;
   const offset = limit * (+pageNumber - 1);
 
