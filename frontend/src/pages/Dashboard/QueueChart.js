@@ -6,17 +6,12 @@ const QueueChart = ({ tickets, loading }) => {
   const theme = useTheme();
   var updateMapper = (conversas) => {
     const queues = conversas.reduce((acc, curr) => {
-      if (curr.queueId !== null) {
+      if (curr.queue) {
         const queueName = curr.queue ? curr.queue.name : "Sem departamento";
         const queueColor = curr.queue ? curr.queue.color : null;
         acc[queueName] = {
           count: (acc[queueName]?.count || 0) + 1,
           color: queueColor,
-        };
-      } else {
-        acc["Sem departamento"] = {
-          count: (acc["Sem departamento"]?.count || 0) + 1,
-          color: null,
         };
       }
       return acc;

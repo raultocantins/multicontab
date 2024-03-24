@@ -19,8 +19,12 @@ const UsersChart = ({ tickets, loading }) => {
   var updateMapper = (tickets) => {
     const contagem = {};
     tickets.forEach((ticket) => {
-      const userName = ticket.user.name;
-      contagem[userName] = contagem[userName] ? contagem[userName] + 1 : 1;
+      if (ticket?.user?.name != null) {
+        const userName = ticket.user.name;
+        contagem[userName] = contagem[userName] ? contagem[userName] + 1 : 1;
+      } else {
+        return;
+      }
     });
     const list = Object.entries(contagem).map(([nome, quantidade]) => ({
       nome,
@@ -32,6 +36,10 @@ const UsersChart = ({ tickets, loading }) => {
         feature: {
           saveAsImage: {},
         },
+      },
+      tooltip: {
+        trigger: "item",
+        formatter: "Quantidade <br/>{b} : {c}",
       },
       grid: {
         left: "3%",
