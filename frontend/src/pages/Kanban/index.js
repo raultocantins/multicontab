@@ -80,7 +80,7 @@ const Kanban = () => {
       id: user.id,
       draggable: false,
       title: user.name,
-      description: "", // alterar para status depois
+      description: `Status do atendente: ${user.status}`, // alterar para status depois
     })),
   };
   const columns = statusOrder.map((status) => ({

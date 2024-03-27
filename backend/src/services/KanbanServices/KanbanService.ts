@@ -39,7 +39,7 @@ const KanbanService = async (): Promise<Response> => {
   });
 
   const { rows: users } = await User.findAndCountAll({
-    attributes: ["id", "name"]
+    attributes: ["id", "name", "status"]
   });
 
   return {
