@@ -10,15 +10,20 @@ import {
   Menu,
   Switch,
   CssBaseline,
+  FormControl,
+  Select,
+  ListItemText,
 } from "@material-ui/core";
 
 import {
   AccountTree,
+  CheckCircle,
   InsertChart,
   Label,
   PeopleAlt,
   QuestionAnswer,
   RecentActors,
+  RemoveCircle,
   Settings,
   SignalCellular4Bar,
   ViewColumn,
@@ -36,7 +41,9 @@ import NotificationsPopOver from "../components/NotificationsPopOver";
 import { useLocation } from "react-router-dom/cjs/react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useHistory } from "react-router-dom";
-
+import api from "../services/api";
+import ToastSuccess from "../components/ToastSuccess";
+import toastError from "../errors/toastError";
 const useStyles = makeStyles((theme) => ({
   icon: {
     color: theme.palette.secondary.main,
@@ -56,6 +63,16 @@ const useStyles = makeStyles((theme) => ({
   menuItemSelected: {
     backgroundColor: theme.palette.background.default,
     borderLeft: `2px solid ${theme.palette.primary.main}`,
+  },
+  statusOnlineIcon: {
+    color: "#64A764",
+    fontSize: 20,
+    padding: 5,
+  },
+  statusOfflineIcon: {
+    color: "#A76464",
+    fontSize: 20,
+    padding: 5,
   },
 }));
 
@@ -147,6 +164,27 @@ const MainListItems = (props) => {
     setMenuOpen(false);
   };
 
+  const updateUserStatus = async (status) => {
+    const userData = { status };
+    try {
+      await api.put(`/users/status/${user.id}`, userData);
+      ToastSuccess("Status atualizado com sucesso");
+    } catch (err) {
+      toastError(err);
+    }
+  };
+
+  const statusToText = (status) => {
+    switch (status) {
+      case "online":
+        return "Disponível";
+      case "offline":
+        return "Aparecer offline";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div onClick={drawerClose}>
       <CssBaseline />
@@ -180,6 +218,60 @@ const MainListItems = (props) => {
                   open={menuOpen}
                   onClose={handleCloseMenu}
                 >
+                  <MenuItem onClick={() => {}}>
+                    <FormControl fullWidth margin="dense">
+                      <Select
+                        displayEmpty
+                        variant="outlined"
+                        value={[user.status]}
+                        onChange={(v) => {
+                          updateUserStatus(v.target.value);
+                        }}
+                        MenuProps={{
+                          anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                          },
+                          transformOrigin: {
+                            vertical: "top",
+                            horizontal: "left",
+                          },
+                          getContentAnchorEl: null,
+                        }}
+                        renderValue={() => (
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            {user.status === "online" ? (
+                              <CheckCircle
+                                className={classes.statusOnlineIcon}
+                              />
+                            ) : (
+                              <RemoveCircle
+                                className={classes.statusOfflineIcon}
+                              />
+                            )}
+                            {statusToText(user.status)}
+                          </div>
+                        )}
+                      >
+                        {["online", "offline"].map((status) => (
+                          <MenuItem dense key={status} value={status}>
+                            {status === "online" ? (
+                              <CheckCircle
+                                className={classes.statusOnlineIcon}
+                              />
+                            ) : (
+                              <RemoveCircle
+                                className={classes.statusOfflineIcon}
+                              />
+                            )}
+                            <ListItemText primary={statusToText(status)} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </MenuItem>
                   <MenuItem onClick={handleOpenUserModal}>
                     {i18n.t("mainDrawer.appBar.user.profile")}
                   </MenuItem>

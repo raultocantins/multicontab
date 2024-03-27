@@ -48,6 +48,10 @@ class User extends Model<User> {
   @Column
   profile: string;
 
+  @Default("online")
+  @Column
+  status: string;
+
   @Default("enabled")
   @Column
   isTricked: string;

@@ -9,6 +9,7 @@ import ListUsersService from "../services/UserServices/ListUsersService";
 import UpdateUserService from "../services/UserServices/UpdateUserService";
 import ShowUserService from "../services/UserServices/ShowUserService";
 import DeleteUserService from "../services/UserServices/DeleteUserService";
+import UpdateUserStatusService from "../services/UserServices/UpdateUserStatusService";
 
 type IndexQuery = {
   searchParam: string;
@@ -103,6 +104,23 @@ export const update = async (
   const userData = req.body;
 
   const user = await UpdateUserService({ userData, userId });
+
+  const io = getIO();
+  io.emit("user", {
+    action: "update",
+    user
+  });
+
+  return res.status(200).json(user);
+};
+export const updateStatus = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { userId } = req.params;
+  const userData = req.body;
+
+  const user = await UpdateUserStatusService({ userData, userId });
 
   const io = getIO();
   io.emit("user", {
