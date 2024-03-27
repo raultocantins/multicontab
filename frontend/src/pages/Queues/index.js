@@ -8,7 +8,6 @@ import {
   Button,
   IconButton,
   makeStyles,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -43,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  title: {
+    padding: theme.spacing(2),
   },
 }));
 
@@ -183,7 +185,10 @@ const Queues = () => {
         queueId={selectedQueue?.id}
       />
       <MainHeader>
-        <Title>Departamentos ({queues.length})</Title>
+        <div className={classes.title}>
+          <Title>Departamentos</Title>
+        </div>
+
         <MainHeaderButtonsWrapper>
           <Tooltip title={i18n.t("queues.buttons.add")}>
             <Button
@@ -196,7 +201,7 @@ const Queues = () => {
           </Tooltip>
         </MainHeaderButtonsWrapper>
       </MainHeader>
-      <Paper className={classes.mainPaper} variant="outlined">
+      <div className={classes.mainPaper} variant="outlined">
         <Table size="small">
           <TableHead>
             <TableRow>
@@ -277,7 +282,7 @@ const Queues = () => {
             </>
           </TableBody>
         </Table>
-      </Paper>
+      </div>
     </MainContainer>
   );
 };

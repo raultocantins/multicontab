@@ -21,6 +21,7 @@ import {
   RecentActors,
   Settings,
   SignalCellular4Bar,
+  ViewColumn,
   WhatsApp,
 } from "@material-ui/icons";
 
@@ -199,6 +200,7 @@ const MainListItems = (props) => {
         icon={<InsertChart />}
         label="Dashboard"
       />
+
       <ListItemLink
         to="/tickets"
         primary={i18n.t("mainDrawer.listItems.tickets")}
@@ -229,6 +231,12 @@ const MainListItems = (props) => {
         perform="drawer-admin-items:view"
         yes={() => (
           <>
+            <ListItemLink
+              to="/kanban"
+              primary="Kanban"
+              icon={<ViewColumn />}
+              label="Kanban"
+            />
             <ListItemLink
               to="/connections"
               primary={i18n.t("mainDrawer.listItems.connections")}

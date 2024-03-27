@@ -65,7 +65,7 @@ const Audio = ({ url }) => {
 
   return (
     <>
-      <audio ref={audioRef} controls>
+      <audio ref={audioRef} controls download>
         {getAudioSource()}
       </audio>
       {showButtonRate && (

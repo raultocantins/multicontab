@@ -6,7 +6,6 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -86,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     overflowY: "scroll",
     ...theme.scrollbarStyles,
+  },
+  title: {
+    padding: theme.spacing(2),
   },
 }));
 
@@ -210,9 +212,10 @@ const Users = () => {
         userId={selectedUser && selectedUser.id}
       />
       <MainHeader>
-        <Title>
-          {i18n.t("users.title")} ({users.length})
-        </Title>
+        <div className={classes.title}>
+          <Title>{i18n.t("users.title")}</Title>
+        </div>
+
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("contacts.searchPlaceholder")}
@@ -238,7 +241,7 @@ const Users = () => {
           </Tooltip>
         </MainHeaderButtonsWrapper>
       </MainHeader>
-      <Paper
+      <div
         className={classes.mainPaper}
         variant="outlined"
         onScroll={handleScroll}
@@ -303,7 +306,7 @@ const Users = () => {
             </>
           </TableBody>
         </Table>
-      </Paper>
+      </div>
     </MainContainer>
   );
 };

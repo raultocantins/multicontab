@@ -6,7 +6,6 @@ import {
   Button,
   IconButton,
   makeStyles,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -83,6 +82,9 @@ const reducer = (state, action) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  title: {
+    padding: theme.spacing(2),
+  },
   mainPaper: {
     flex: 1,
     padding: theme.spacing(2),
@@ -238,9 +240,10 @@ const QuickAnswers = () => {
         quickAnswerId={selectedQuickAnswers && selectedQuickAnswers.id}
       ></QuickAnswersModal>
       <MainHeader>
-        <Title>
-          {i18n.t("quickAnswers.title")} ({quickAnswers.length})
-        </Title>
+        <div className={classes.title}>
+          <Title>{i18n.t("quickAnswers.title")}</Title>
+        </div>
+
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("quickAnswers.searchPlaceholder")}
@@ -278,7 +281,7 @@ const QuickAnswers = () => {
           </Tooltip>
         </MainHeaderButtonsWrapper>
       </MainHeader>
-      <Paper
+      <div
         className={classes.mainPaper}
         variant="outlined"
         onScroll={handleScroll}
@@ -327,7 +330,7 @@ const QuickAnswers = () => {
             </>
           </TableBody>
         </Table>
-      </Paper>
+      </div>
     </MainContainer>
   );
 };

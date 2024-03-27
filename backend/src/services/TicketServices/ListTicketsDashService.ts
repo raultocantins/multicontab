@@ -4,6 +4,7 @@ import { startOfDay, endOfDay, parseISO } from "date-fns";
 import Ticket from "../../models/Ticket";
 import Queue from "../../models/Queue";
 import User from "../../models/User";
+import Contact from "../../models/Contact";
 
 interface Request {
   dateRange?: string[];
@@ -26,12 +27,6 @@ const ListTicketsDashService = async ({
   }
   let includeCondition: Includeable[];
   includeCondition = [
-    // {
-    //   model: Contact,
-    //   as: "contact",
-    //   attributes: ["id", "name", "number", "profilePicUrl"]
-    //   // include: ["extraInfo", "contactTags", "tags"]
-    // },USAR PARA GRAFICOS DE TAGS E CONTATOS NO FUTURO
     {
       model: User,
       as: "user",

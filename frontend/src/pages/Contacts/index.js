@@ -10,7 +10,6 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -93,6 +92,9 @@ const reducer = (state, action) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  title: {
+    padding: theme.spacing(2),
+  },
   mainPaper: {
     flex: 1,
     padding: theme.spacing(2),
@@ -244,7 +246,7 @@ const Contacts = () => {
   };
 
   return (
-    <MainContainer className={classes.mainContainer}>
+    <MainContainer>
       <NewTicketModalPageContact
         modalOpen={newTicketModalOpen}
         initialContact={contactTicket}
@@ -285,9 +287,9 @@ const Contacts = () => {
           : `${i18n.t("contacts.confirmationModal.importMessage")}`}
       </ConfirmationModal>
       <MainHeader>
-        <Title>
-          {i18n.t("contacts.title")} ({contacts.length})
-        </Title>
+        <div className={classes.title}>
+          <Title>{i18n.t("contacts.title")}</Title>
+        </div>
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("contacts.searchPlaceholder")}
@@ -366,10 +368,11 @@ const Contacts = () => {
           />
         </MainHeaderButtonsWrapper>
       </MainHeader>
-      <Paper
+      <div
         className={classes.mainPaper}
         variant="outlined"
         onScroll={handleScroll}
+        elevation={5}
       >
         <Table size="small">
           <TableHead>
@@ -444,7 +447,7 @@ const Contacts = () => {
             </>
           </TableBody>
         </Table>
-      </Paper>
+      </div>
     </MainContainer>
   );
 };

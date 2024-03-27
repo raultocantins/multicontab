@@ -6,7 +6,6 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -93,6 +92,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  title: {
+    padding: theme.spacing(2),
   },
 }));
 
@@ -245,9 +247,10 @@ const Tags = () => {
         tagId={selectedTag && selectedTag.id}
       />
       <MainHeader>
-        <Title>
-          {i18n.t("tags.title")} ({tags.length})
-        </Title>
+        <div className={classes.title}>
+          <Title>{i18n.t("tags.title")}</Title>
+        </div>
+
         <MainHeaderButtonsWrapper>
           <TextField
             placeholder={i18n.t("contacts.searchPlaceholder")}
@@ -285,7 +288,7 @@ const Tags = () => {
           </Tooltip>
         </MainHeaderButtonsWrapper>
       </MainHeader>
-      <Paper
+      <div
         className={classes.mainPaper}
         variant="outlined"
         onScroll={handleScroll}
@@ -349,7 +352,7 @@ const Tags = () => {
             </>
           </TableBody>
         </Table>
-      </Paper>
+      </div>
     </MainContainer>
   );
 };
