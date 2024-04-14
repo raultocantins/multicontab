@@ -24,6 +24,7 @@ import {
   QuestionAnswer,
   RecentActors,
   RemoveCircle,
+  Search,
   Settings,
   SignalCellular4Bar,
   ViewColumn,
@@ -317,6 +318,12 @@ const MainListItems = (props) => {
         icon={<Label />}
         label="Tags"
       />
+      <ListItemLink
+        to="/search"
+        primary={i18n.t("mainDrawer.listItems.tags")}
+        icon={<Search />}
+        label="Pesquisa"
+      />
 
       <Can
         role={user.profile}
@@ -325,9 +332,9 @@ const MainListItems = (props) => {
           <>
             <ListItemLink
               to="/kanban"
-              primary="Kanban"
+              primary="Painel"
               icon={<ViewColumn />}
-              label="Kanban"
+              label="Painel"
             />
             <ListItemLink
               to="/connections"

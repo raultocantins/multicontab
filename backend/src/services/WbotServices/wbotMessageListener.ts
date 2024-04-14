@@ -151,8 +151,6 @@ const verifyMediaMessage = async (
       "base64"
     )
       .then(() => {
-        console.log("Arquivo salvo com sucesso!");
-
         const inputFile = `./public/${media.filename}`;
         let outputFile: string;
 

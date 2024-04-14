@@ -19,6 +19,7 @@ import { AuthProvider } from "../context/Auth/AuthContext";
 import { WhatsAppsProvider } from "../context/WhatsApp/WhatsAppsContext";
 import Route from "./Route";
 import Kanban from "../pages/Kanban";
+import Search from "../pages/Search";
 
 const Routes = () => {
   return (
@@ -54,6 +55,7 @@ const Routes = () => {
               <Route exact path="/Settings" component={Settings} isPrivate />
               <Route exact path="/Queues" component={Queues} isPrivate />
               <Route exact path="/Tags" component={Tags} isPrivate />
+              <Route exact path="/search" component={Search} isPrivate />
             </LoggedInLayout>
           </WhatsAppsProvider>
         </Switch>

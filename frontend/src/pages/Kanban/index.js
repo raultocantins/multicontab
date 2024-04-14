@@ -3,7 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import api from "../../services/api";
 import Board from "react-trello";
 import { differenceInMinutes } from "date-fns";
-// import Title from "../../components/Title";
+import Title from "../../components/Title";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     alignContent: "flex-start",
     width: "100%",
     height: "100vh",
-    padding: theme.spacing(2),
   },
   button: {
     background: "#10a110",
@@ -22,10 +23,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     borderRadius: "5px",
   },
+  title: {
+    padding: theme.spacing(2),
+  },
+  statusOnlineIcon: {
+    color: "#64A764",
+  },
+  statusOfflineIcon: {
+    color: "#A76464",
+  },
 }));
 
 const Kanban = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [tickets, setTickets] = useState([]);
   const [users, setUsers] = useState([]);
 
@@ -36,7 +47,6 @@ const Kanban = () => {
       setTickets(data.tickets);
       setUsers(data.users);
     } catch (err) {
-      console.log(err);
       setTickets([]);
     }
   };
@@ -47,7 +57,7 @@ const Kanban = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchTickets();
-    }, 60000); //atualizando em 1 minuto
+    }, 30000); //atualizando em 30 segundos
     return () => {
       clearInterval(interval);
     };
@@ -73,14 +83,41 @@ const Kanban = () => {
     acc[status].push(conversation);
     return acc;
   }, {});
-  const usersColumn = {
+  const userOnline = users.filter((e) => e.status === "online");
+  const userOffline = users.filter((e) => e.status === "offline");
+  const usersOnlineColumn = {
     id: "users",
-    title: "Usuários",
-    cards: users.map((user) => ({
+    title: "Usuários online",
+    cards: userOnline.map((user) => ({
       id: user.id,
       draggable: false,
       title: user.name,
-      description: `Status do atendente: ${user.status}`, // alterar para status depois
+      description: (
+        <Typography variant="caption">
+          Status do atendente:{" "}
+          <Typography variant="caption" className={classes.statusOnlineIcon}>
+            {user.status}
+          </Typography>
+        </Typography>
+      ),
+    })),
+  };
+
+  const usersOfflineColumn = {
+    id: "users",
+    title: "Usuários offline",
+    cards: userOffline.map((user) => ({
+      id: user.id,
+      draggable: false,
+      title: user.name,
+      description: (
+        <Typography variant="caption">
+          Status do atendente:{" "}
+          <Typography variant="caption" className={classes.statusOfflineIcon}>
+            {user.status}
+          </Typography>
+        </Typography>
+      ),
     })),
   };
   const columns = statusOrder.map((status) => ({
@@ -90,7 +127,6 @@ const Kanban = () => {
     cards: (conversationsByStatus[status] || []).map((conversation) => ({
       id: conversation.id,
       draggable: false,
-
       title: conversation.contact.name,
       description: `Tempo de atendimento: ${timeSinceCreation(
         conversation.createdAt
@@ -98,11 +134,17 @@ const Kanban = () => {
     })),
   }));
 
+  const goToTicket = (id) => {
+    history.push(`/tickets/${id}`);
+  };
+
   return (
     <div className={classes.root}>
-      {/* <Title>Horário de atualização</Title> */}
+      <div className={classes.title}>
+        <Title>Painel</Title>
+      </div>
       <Board
-        data={{ lanes: [...columns, usersColumn] }}
+        data={{ lanes: [...columns, usersOnlineColumn, usersOfflineColumn] }}
         hideCardDeleteIcon={true}
         style={{
           width: "100%",
@@ -111,6 +153,11 @@ const Kanban = () => {
           backgroundColor: "rgba(252, 252, 252, 0.03)",
         }}
         laneStyle={{ minWidth: "0", flex: "1" }}
+        onCardClick={(cardId, _, laneId) => {
+          if (laneId === "pending" || laneId === "open") {
+            goToTicket(cardId);
+          }
+        }}
       />
     </div>
   );
