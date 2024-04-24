@@ -132,6 +132,18 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     alignContent: "flex-start",
   },
+  profilePic: {
+    width: "50px",
+    height: "50px",
+  },
+  listItemTimestamp: {
+    position: "absolute",
+    right: 15,
+    top: 13,
+    height: 16,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+  }
 }));
 
 const TicketListItem = ({ ticket, userId }) => {
@@ -154,7 +166,7 @@ const TicketListItem = ({ ticket, userId }) => {
         try {
           const { data } = await api.get("/tickets/" + ticket.id);
           setTag(data?.contact?.tags);
-        } catch (err) {}
+        } catch (err) { }
       };
       fetchTicket();
     }, 500);
@@ -329,10 +341,7 @@ const TicketListItem = ({ ticket, userId }) => {
               }}
             >
               <Avatar
-                style={{
-                  width: "50px",
-                  height: "50px",
-                }}
+                className={classes.profilePic}
                 src={ticket?.contact?.profilePicUrl}
               />
             </Badge>
@@ -348,14 +357,7 @@ const TicketListItem = ({ ticket, userId }) => {
                   <Typography
                     variant="caption"
                     color="textSecondary"
-                    style={{
-                      position: "absolute",
-                      right: 15,
-                      top: 13,
-                      height: 16,
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                    }}
+                    className={classes.listItemTimestamp}
                   >
                     {isSameDay(parseISO(ticket.updatedAt), new Date()) ? (
                       <>{format(parseISO(ticket.updatedAt), "HH:mm")}</>

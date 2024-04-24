@@ -75,6 +75,24 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     padding: 5,
   },
+  icon32: {
+    color: theme.palette.secondary.main,
+    justifyContent: "center",
+    alignContent: "center",
+    fontSize: 32,
+  },
+  listItemSpan: {
+    fontSize: 8
+  },
+  listItem: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  userStatusContainer: {
+    display: "flex",
+    alignItems: "center"
+  }
 }));
 
 function ListItemLink(props) {
@@ -102,11 +120,11 @@ function ListItemLink(props) {
         }}
       >
         {icon ? (
-          <ListItemIcon className={classes.icon} style={{ fontSize: 32 }}>
+          <ListItemIcon className={classes.icon32}>
             {icon}
           </ListItemIcon>
         ) : null}
-        <span style={{ fontSize: 8 }}>{label}</span>
+        <span className={classes.listItemSpan}>{label}</span>
       </ListItem>
     </li>
   );
@@ -192,11 +210,7 @@ const MainListItems = (props) => {
       <li className={classes.li}>
         <ListItem
           button
-          style={{
-            flexDirection: "column",
-            justifyContent: "center",
-            alignContent: "center",
-          }}
+          className={classes.listItem}
           onClick={handleMenu}
         >
           <ListItemIcon className={classes.icon}>
@@ -219,7 +233,7 @@ const MainListItems = (props) => {
                   open={menuOpen}
                   onClose={handleCloseMenu}
                 >
-                  <MenuItem onClick={() => {}}>
+                  <MenuItem onClick={() => { }}>
                     <FormControl fullWidth margin="dense">
                       <Select
                         displayEmpty
@@ -241,7 +255,7 @@ const MainListItems = (props) => {
                         }}
                         renderValue={() => (
                           <div
-                            style={{ display: "flex", alignItems: "center" }}
+                            className={classes.userStatusContainer}
                           >
                             {user.status === "online" ? (
                               <CheckCircle
@@ -283,7 +297,7 @@ const MainListItems = (props) => {
               </div>
             }
           </ListItemIcon>
-          <span style={{ fontSize: 8 }}>Perfil</span>
+          <span className={classes.listItemSpan}>Perfil</span>
         </ListItem>
       </li>
 
@@ -375,13 +389,9 @@ const MainListItems = (props) => {
 
       <ListItem
         button
-        style={{
-          flexDirection: "column",
-          justifyContent: "center",
-          alignContent: "center",
-        }}
+        className={classes.listItem}
       >
-        <ListItemIcon className={classes.icon} style={{ fontSize: 32 }}>
+        <ListItemIcon className={classes.icon32}>
           <Switch
             size="small"
             checked={storedValue.theme === "dark" ? true : false}
@@ -395,7 +405,7 @@ const MainListItems = (props) => {
           />
         </ListItemIcon>
 
-        <span style={{ fontSize: 8 }}>Modo Escuro</span>
+        <span className={classes.listItemSpan}>Modo Escuro</span>
       </ListItem>
 
       <UserModal

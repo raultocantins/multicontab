@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
     height: 120,
+    overflow: "hidden",
   },
   customFixedHeightPaperLg: {
     padding: theme.spacing(2),
@@ -172,7 +173,6 @@ const Dashboard = () => {
             <Paper
               elevation={0}
               className={classes.customFixedHeightPaper}
-              style={{ overflow: "hidden" }}
             >
               <Typography component="h3" variant="h6" color="primary" paragraph>
                 {i18n.t("dashboard.messages.inAttendance.title")}
@@ -188,7 +188,6 @@ const Dashboard = () => {
             <Paper
               elevation={0}
               className={classes.customFixedHeightPaper}
-              style={{ overflow: "hidden" }}
             >
               <Typography component="h3" variant="h6" color="primary" paragraph>
                 {i18n.t("dashboard.messages.waiting.title")}
@@ -204,7 +203,6 @@ const Dashboard = () => {
             <Paper
               elevation={0}
               className={classes.customFixedHeightPaper}
-              style={{ overflow: "hidden" }}
             >
               <Typography component="h3" variant="h6" color="primary" paragraph>
                 {i18n.t("dashboard.messages.closed.title")}

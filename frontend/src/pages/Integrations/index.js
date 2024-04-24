@@ -26,6 +26,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginBottom: 12,
   },
+  organization: {
+    marginRight: "1%",
+    width: "50%",
+  },
+  apikey: {
+    marginRight: "1%",
+    width: "50%",
+  },
+  urlApiN8N: {
+    width: "100%",
+  },
 }));
 
 const Integrations = () => {
@@ -94,7 +105,7 @@ const Integrations = () => {
           </Typography>
           <Paper elevation={4} className={classes.paper}>
             <TextField
-              style={{ marginRight: "1%", width: "50%" }}
+              className={classes.organization}
               id="organization"
               name="organization"
               margin="dense"
@@ -109,7 +120,7 @@ const Integrations = () => {
               fullWidth
             />
             <TextField
-              style={{ marginRight: "1%", width: "50%" }}
+              className={classes.apikey}
               id="apikey"
               name="apikey"
               label={i18n.t("integrations.integrations.openai.apikey")}
@@ -132,7 +143,7 @@ const Integrations = () => {
           </Typography>
           <Paper elevation={4} className={classes.paper}>
             <TextField
-              style={{ width: "100%" }}
+              className={classes.urlApiN8N}
               id="urlApiN8N"
               name="urlApiN8N"
               margin="dense"

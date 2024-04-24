@@ -1,4 +1,4 @@
-import { Chip, Paper, TextField } from "@material-ui/core";
+import { Chip, Paper, TextField, makeStyles } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useEffect, useState } from "react";
 import { isArray, isString } from "lodash";
@@ -6,7 +6,22 @@ import toastError from "../../errors/toastError";
 import api from "../../services/api";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    padding: 12
+  },
+  chip: {
+    textShadow: "1px 1px 1px #000",
+    color: "white",
+  },
+  paperComponent: {
+    width: 400,
+    marginLeft: 12
+  }
+}));
+
 export function TagsContainer({ contact }) {
+  const classes = useStyles();
   const history = useHistory();
   const [tags, setTags] = useState([]);
   const [selecteds, setSelecteds] = useState([]);
@@ -73,7 +88,7 @@ export function TagsContainer({ contact }) {
   };
 
   return (
-    <Paper style={{ padding: 12 }}>
+    <Paper className={classes.container}>
       <Autocomplete
         multiple
         size="small"
@@ -86,11 +101,8 @@ export function TagsContainer({ contact }) {
           value.map((option, index) => (
             <Chip
               variant="outlined"
-              style={{
-                backgroundColor: option.color || "#eee",
-                textShadow: "1px 1px 1px #000",
-                color: "white",
-              }}
+              style={{ backgroundColor: option.color || "#eee" }}
+              className={classes.chip}
               label={option.name}
               {...getTagProps({ index })}
               size="small"
@@ -101,7 +113,7 @@ export function TagsContainer({ contact }) {
           <TextField {...params} variant="outlined" placeholder="Tags" />
         )}
         PaperComponent={({ children }) => (
-          <Paper style={{ width: 400, marginLeft: 12 }}>{children}</Paper>
+          <Paper className={classes.paperComponent}>{children}</Paper>
         )}
       />
     </Paper>

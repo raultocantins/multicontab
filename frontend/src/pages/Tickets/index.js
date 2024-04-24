@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     textAlign: "center",
   },
+  welcomeMsgImg: {
+    width: 400,
+  },
   ticketsManager: {},
   ticketsManagerClosed: {
     [theme.breakpoints.down("sm")]: {
@@ -88,7 +91,7 @@ const Chat = () => {
             ) : (
               <Hidden only={["sm", "xs"]}>
                 <Paper className={classes.welcomeMsg}>
-                  <img src={welcome} style={{ width: 400 }} alt="welcome"></img>
+                  <img src={welcome} className={classes.welcomeMsgImg} alt="welcome"></img>
                   <Typography variant="h5">
                     Pronto para uma atendimento incrível?
                   </Typography>

@@ -10,6 +10,9 @@ import api from "../../services/api";
 import { i18n } from "../../translate/i18n";
 
 const useStyles = makeStyles(theme => ({
+	queueSelectContainer: {
+		marginTop: 6,
+	},
 	chips: {
 		display: "flex",
 		flexWrap: "wrap",
@@ -39,7 +42,7 @@ const QueueSelect = ({ selectedQueueIds, onChange }) => {
 	};
 
 	return (
-		<div style={{ marginTop: 6 }}>
+		<div className={classes.queueSelectContainer}>
 			<FormControl fullWidth margin="dense" variant="outlined">
 				<InputLabel>{i18n.t("queueSelect.inputLabel")}</InputLabel>
 				<Select

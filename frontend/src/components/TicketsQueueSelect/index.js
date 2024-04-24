@@ -3,20 +3,28 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { Checkbox, ListItemText } from "@material-ui/core";
+import { Checkbox, ListItemText, makeStyles } from "@material-ui/core";
 import { i18n } from "../../translate/i18n";
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    width: 120,
+    marginTop: -4
+  }
+}));
 
 const TicketsQueueSelect = ({
   userQueues,
   selectedQueueIds = [],
   onChange,
 }) => {
+  const classes = useStyles();
   const handleChange = (e) => {
     onChange(e.target.value);
   };
 
   return (
-    <div style={{ width: 120, marginTop: -4 }}>
+    <div className={classes.container}>
       <FormControl fullWidth margin="dense">
         <Select
           multiple
@@ -41,9 +49,7 @@ const TicketsQueueSelect = ({
             userQueues.map((queue) => (
               <MenuItem dense key={queue.id} value={queue.id}>
                 <Checkbox
-                  style={{
-                    color: queue.color,
-                  }}
+                  style={{ color: queue.color, }}
                   size="small"
                   color="primary"
                   checked={selectedQueueIds.indexOf(queue.id) > -1}

@@ -3,11 +3,21 @@ import QRCode from "qrcode.react";
 import openSocket from "../../services/socket-io";
 import toastError from "../../errors/toastError";
 
-import { Dialog, DialogContent, Paper, Typography } from "@material-ui/core";
+import { Dialog, DialogContent, Paper, Typography, makeStyles } from "@material-ui/core";
 import { i18n } from "../../translate/i18n";
 import api from "../../services/api";
 
+const useStyles = makeStyles(theme => ({
+	dialogContent: {
+		background: '#ffffff'
+	},
+	paper: {
+		background: '#ffffff'
+	}
+}));
+
 const QrcodeModal = ({ open, onClose, whatsAppId }) => {
+	const classes = useStyles();
 	const [qrCode, setQrCode] = useState("");
 
 	useEffect(() => {
@@ -45,8 +55,8 @@ const QrcodeModal = ({ open, onClose, whatsAppId }) => {
 
 	return (
 		<Dialog open={open} onClose={onClose} maxWidth="lg" scroll="paper">
-			<DialogContent style={{background: '#ffffff'}}>
-				<Paper elevation={0} style={{background: '#ffffff'}}>
+			<DialogContent className={classes.dialogContent}>
+				<Paper elevation={0} className={classes.paper}>
 					<Typography color="primary" gutterBottom>
 						{i18n.t("qrCode.message")}
 					</Typography>

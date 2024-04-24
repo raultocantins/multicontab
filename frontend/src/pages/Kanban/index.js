@@ -32,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
   statusOfflineIcon: {
     color: "#A76464",
   },
+  board: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    backgroundColor: "rgba(252, 252, 252, 0.03)",
+  }
 }));
 
 const Kanban = () => {
@@ -146,12 +152,7 @@ const Kanban = () => {
       <Board
         data={{ lanes: [...columns, usersOnlineColumn, usersOfflineColumn] }}
         hideCardDeleteIcon={true}
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          backgroundColor: "rgba(252, 252, 252, 0.03)",
-        }}
+        className={classes.board}
         laneStyle={{ minWidth: "0", flex: "1" }}
         onCardClick={(cardId, _, laneId) => {
           if (laneId === "pending" || laneId === "open") {

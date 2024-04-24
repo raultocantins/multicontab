@@ -3,36 +3,67 @@ import toastError from "../../errors/toastError";
 
 import Typography from "@material-ui/core/Typography";
 
-import { Button, Divider, } from "@material-ui/core";
+import { Button, Divider, makeStyles, } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+	container: {
+		minWidth: "250px",
+	},
+	imageContainer: {
+		float: "left",
+	},
+	image: {
+		width: "100px",
+	},
+	descriptionContainer: {
+		display: "flex",
+		flexWrap: "wrap"
+	},
+	description: {
+		marginTop: "12px",
+		marginLeft: "15px",
+		marginRight: "15px",
+		float: "left"
+	},
+	divider: {
+		display: "block",
+		content: "",
+		clear: "both"
+	}
+}));
 
 const LocationPreview = ({ image, link, description }) => {
-    useEffect(() => {}, [image, link, description]);
+	const classes = useStyles();
+	useEffect(() => { }, [image, link, description]);
 
-    const handleLocation = async() => {
-        try {
-            window.open(link);
-        } catch (err) {
-            toastError(err);
-        }
-    }
+	const handleLocation = async () => {
+		try {
+			window.open(link);
+		} catch (err) {
+			toastError(err);
+		}
+	}
 
-    return (
+	return (
 		<>
-			<div style={{
-				minWidth: "250px",
-			}}>
+			<div className={classes.container}>
 				<div>
-					<div style={{ float: "left" }}>
-						<img src={image} alt="" onClick={handleLocation} style={{ width: "100px" }} />
+					<div className={classes.imgContainer}>
+						<img src={image} alt="" onClick={handleLocation} className={classes.image} />
 					</div>
-					{ description && (
-					<div style={{ display: "flex", flexWrap: "wrap" }}>
-						<Typography style={{ marginTop: "12px", marginLeft: "15px", marginRight: "15px", float: "left" }} variant="subtitle1" color="primary" gutterBottom>
-							<div dangerouslySetInnerHTML={{ __html: description.replace('\\n', '<br />') }}></div>
-						</Typography>
-					</div>
+					{description && (
+						<div className={classes.descriptionContainer}>
+							<Typography
+								className={classes.description}
+								variant="subtitle1"
+								color="primary"
+								gutterBottom
+							>
+								<div dangerouslySetInnerHTML={{ __html: description.replace('\\n', '<br />') }}></div>
+							</Typography>
+						</div>
 					)}
-					<div style={{ display: "block", content: "", clear: "both" }}></div>
+					<div className={classes.divider}></div>
 					<div>
 						<Divider />
 						<Button

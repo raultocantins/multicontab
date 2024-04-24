@@ -1,8 +1,15 @@
 import React from "react";
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+	reactECharts: {
+    height: 400
+  }
+}));
 
 const DayChart = ({ tickets, loading }) => {
+  const classes = useStyles();
   const theme = useTheme();
   var updateMapper = (tickets) => {
     function contarChamadosPorDia(conversas) {
@@ -77,7 +84,7 @@ const DayChart = ({ tickets, loading }) => {
   return (
     <ReactECharts
       option={updateMapper(tickets)}
-      style={{ height: 400 }}
+      className={classes.reactECharts}
       showLoading={loading}
     />
   );

@@ -11,7 +11,8 @@ import {
     ListItemText,
     MenuItem,
     Select,
-    TextField
+    TextField,
+		makeStyles
 } from "@material-ui/core";
 
 import Autocomplete, {
@@ -31,8 +32,14 @@ const filter = createFilterOptions({
 	trim: true,
 });
 
-const NewTicketModalPageContact = ({ modalOpen, onClose, initialContact }) => {
+const useStyles = makeStyles(theme => ({
+	grid: {
+		width: 300
+	}
+}));
 
+const NewTicketModalPageContact = ({ modalOpen, onClose, initialContact }) => {
+	const classes = useStyles();
 	const [options, setOptions] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [searchParam, setSearchParam] = useState("");
@@ -209,7 +216,7 @@ const NewTicketModalPageContact = ({ modalOpen, onClose, initialContact }) => {
 					{i18n.t("newTicketModal.title")}
 				</DialogTitle>
 				<DialogContent dividers>
-					<Grid style={{ width: 300 }} container spacing={2}>
+					<Grid className={classes.grid} container spacing={2}>
 						{renderContactAutocomplete()}
 						<Grid xs={12} item>
 							<Select

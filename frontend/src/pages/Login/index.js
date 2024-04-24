@@ -48,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
   boxFormLogin: {
     background: theme.palette.background.default,
     padding: theme.spacing(5, 3, 2),
+    height: "100vh", 
+    width: 400,
   },
   background: {
     backgroundImage: `url(${logo})`,
@@ -79,10 +81,7 @@ const Login = () => {
   return (
     <div className={classes.background}>
       <CssBaseline />
-      <div
-        style={{ height: "100vh", width: 400 }}
-        className={classes.boxFormLogin}
-      >
+      <div className={classes.boxFormLogin}>
         <Typography variant="h5">Olá! bem vindo de volta</Typography>
         <Typography variant="body">
           para continuar conectado conosco, faça login com suas informações

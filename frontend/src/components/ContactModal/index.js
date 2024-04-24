@@ -33,10 +33,18 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     flex: 1,
   },
+  extraAttrTitle: {
+    marginBottom: 8,
+    marginTop: 12,
+  },
   extraAttr: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  extraAttrAddBtn: {
+    flex: 1,
+    marginTop: 8,
   },
   btnWrapper: {
     position: "relative",
@@ -189,7 +197,7 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
                   />
                 </div>
                 <Typography
-                  style={{ marginBottom: 8, marginTop: 12 }}
+                  className={classes.extraAttrTitle}
                   variant="subtitle1"
                 >
                   {i18n.t("contactModal.form.extraInfo")}
@@ -231,7 +239,7 @@ const ContactModal = ({ open, onClose, contactId, initialValues, onSave }) => {
                         ))}
                       <div className={classes.extraAttr}>
                         <Button
-                          style={{ flex: 1, marginTop: 8 }}
+                          className={classes.extraAttrAddBtn}
                           variant="outlined"
                           color="primary"
                           onClick={() => push({ name: "", value: "" })}

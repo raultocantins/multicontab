@@ -105,6 +105,9 @@ const useStyles = makeStyles((theme) => ({
   moreFilter: {
     color: theme.palette.text.primary,
   },
+  ticketsQueueSelect: {
+    marginLeft: 6,
+  }
 }));
 
 const TicketsManager = () => {
@@ -211,7 +214,7 @@ const TicketsManager = () => {
                 role={user.profile}
                 perform="tickets-manager:showall"
                 yes={() => (
-                  <MenuItem onClick={() => {}}>
+                  <MenuItem onClick={() => { }}>
                     <FormControlLabel
                       label={i18n.t("tickets.buttons.showAll")}
                       labelPlacement="start"
@@ -233,7 +236,7 @@ const TicketsManager = () => {
 
               <MenuItem>
                 <TicketsQueueSelect
-                  style={{ marginLeft: 6 }}
+                  className={classes.ticketsQueueSelect}
                   selectedQueueIds={selectedQueueIds}
                   userQueues={user?.queues}
                   onChange={(values) => setSelectedQueueIds(values)}

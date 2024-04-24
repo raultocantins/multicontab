@@ -96,6 +96,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     padding: theme.spacing(2),
   },
+  customTableCellSpan: {
+    width: 20,
+    height: 20,
+    alignSelf: "center",
+    borderRadius: 10,
+  }
 }));
 
 const Tags = () => {
@@ -314,13 +320,8 @@ const Tags = () => {
                   <TableCell align="center">
                     <div className={classes.customTableCell}>
                       <span
-                        style={{
-                          backgroundColor: tag.color,
-                          width: 20,
-                          height: 20,
-                          alignSelf: "center",
-                          borderRadius: 10,
-                        }}
+                        style={{ backgroundColor: tag.color }}
+                        className={classes.customTableCellSpan}
                       />
                     </div>
                   </TableCell>

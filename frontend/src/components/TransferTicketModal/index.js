@@ -47,6 +47,18 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
   },
+  attendantsName: {
+    width: 300,
+    marginBottom: 20,
+  },
+  attendantsStatusLabel: {
+    display: "flex",
+    alignItems: "center",
+  },
+  connectionSelect: {
+    marginTop: 20,
+    width: "100%",
+  },
 }));
 
 const filterOptions = createFilterOptions({
@@ -158,13 +170,13 @@ const TransferTicketModal = ({
         </DialogTitle>
         <DialogContent dividers>
           <Autocomplete
-            style={{ width: 300, marginBottom: 20 }}
+            className={classes.attendantsName}
             getOptionLabel={(option) => option.name}
             renderOption={(option) => {
               return (
                 <div className={classes.renderOption}>
                   <Typography> {option.name}</Typography>
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <div className={classes.attendantsStatusLabel}>
                     {option.status === "online" ? (
                       <CheckCircle className={classes.statusOnlineIcon} />
                     ) : (
@@ -236,8 +248,7 @@ const TransferTicketModal = ({
               !loadingWhatsapps && (
                 <FormControl
                   variant="outlined"
-                  className={classes.maxWidth}
-                  style={{ marginTop: 20 }}
+                  className={classes.connectionSelect}
                 >
                   <InputLabel>
                     {i18n.t("transferTicketModal.fieldConnectionLabel")}

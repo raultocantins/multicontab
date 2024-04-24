@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
 		borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
 		borderTopRightRadius: 4,
 		borderBottomRightRadius: 4,
+		position: "absolute",
 	},
 	header: {
 		display: "flex",
@@ -84,6 +85,9 @@ const useStyles = makeStyles(theme => ({
 		marginTop: 4,
 		padding: 6,
 	},
+	contactExtraInfoValue: {
+		paddingTop: 2
+	}
 }));
 
 const ContactDrawer = ({ open, handleDrawerClose, contact, loading }) => {
@@ -97,12 +101,6 @@ const ContactDrawer = ({ open, handleDrawerClose, contact, loading }) => {
 			variant="persistent"
 			anchor="right"
 			open={open}
-			PaperProps={{ style: { position: "absolute" } }}
-			BackdropProps={{ style: { position: "absolute" } }}
-			ModalProps={{
-				container: document.getElementById("drawer-container"),
-				style: { position: "absolute" },
-			}}
 			classes={{
 				paper: classes.drawerPaper,
 			}}
@@ -113,7 +111,7 @@ const ContactDrawer = ({ open, handleDrawerClose, contact, loading }) => {
 					onClick={handleDrawerClose}>
 					<CloseIcon />
 				</IconButton>
-				<Typography style={{ justifySelf: "center" }}>
+				<Typography>
 					{i18n.t("contactDrawer.header")}
 				</Typography>
 			</div>
@@ -166,7 +164,7 @@ const ContactDrawer = ({ open, handleDrawerClose, contact, loading }) => {
 									{info.name}
 									<CopyToClipboard content={info.value} color="secondary" />
 								</InputLabel>
-								<Typography component="div" noWrap style={{ paddingTop: 2 }}>
+								<Typography className={classes.contactExtraInfoValue} component="div" noWrap>
 									<MarkdownWrapper>{info.value}</MarkdownWrapper>
 								</Typography>
 							</Paper>

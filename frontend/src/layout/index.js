@@ -97,6 +97,9 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0.2,
     fontSize: 12,
   },
+  list: {
+    padding: 0,
+  },
 }));
 
 const LoggedInLayout = ({ children }) => {
@@ -133,7 +136,7 @@ const LoggedInLayout = ({ children }) => {
         }}
         open={drawerOpen}
       >
-        <List style={{ padding: 0 }}>
+        <List className={classes.list}>
           <MainListItems />
         </List>
       </Drawer>

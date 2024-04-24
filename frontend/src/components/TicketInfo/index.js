@@ -1,14 +1,21 @@
 import React from "react";
 
-import { Avatar, CardHeader } from "@material-ui/core";
+import { Avatar, CardHeader, makeStyles } from "@material-ui/core";
 
 import { i18n } from "../../translate/i18n";
 
+const useStyles = makeStyles(theme => ({
+	cardHeader: {
+		cursor: "pointer"
+	}
+}));
+
 const TicketInfo = ({ contact, ticket, onClick }) => {
+	const classes = useStyles();
 	return (
 		<CardHeader
 			onClick={onClick}
-			style={{ cursor: "pointer" }}
+			className={classes.cardHeader}
 			titleTypographyProps={{ noWrap: true }}
 			subheaderTypographyProps={{ noWrap: true }}
 			avatar={<Avatar src={contact.profilePicUrl} alt="contact_image" />}

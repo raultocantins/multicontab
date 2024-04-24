@@ -46,6 +46,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     padding: theme.spacing(2),
   },
+  customTableCellSpan: {
+    width: 20,
+    height: 20,
+    alignSelf: "center",
+    borderRadius: 10,
+  },
 }));
 
 const reducer = (state, action) => {
@@ -169,8 +175,7 @@ const Queues = () => {
       <ConfirmationModal
         title={
           selectedQueue &&
-          `${i18n.t("queues.confirmationModal.deleteTitle")} ${
-            selectedQueue.name
+          `${i18n.t("queues.confirmationModal.deleteTitle")} ${selectedQueue.name
           }?`
         }
         open={confirmModalOpen}
@@ -235,13 +240,8 @@ const Queues = () => {
                   <TableCell align="center">
                     <div className={classes.customTableCell}>
                       <span
-                        style={{
-                          backgroundColor: queue.color,
-                          width: 20,
-                          height: 20,
-                          alignSelf: "center",
-                          borderRadius: 10,
-                        }}
+                        style={{ backgroundColor: queue.color }}
+                        className={classes.customTableCellSpan}
                       />
                     </div>
                   </TableCell>

@@ -24,11 +24,15 @@ const useStyles = makeStyles((theme) => ({
     borderBottomRightRadius: 0,
   },
 
-  ticketsList: {
+  ticketsListPaper: {
     flex: 1,
     overflowY: "scroll",
     ...theme.scrollbarStyles,
     borderTop: "2px solid rgba(0, 0, 0, 0.12)",
+  },
+
+  ticketsList: {
+    paddingTop: 0,
   },
 
   ticketsListHeader: {
@@ -319,10 +323,10 @@ const TicketsList = (props) => {
         square
         name="closed"
         elevation={0}
-        className={classes.ticketsList}
+        className={classes.ticketsListPaper}
         onScroll={handleScroll}
       >
-        <List style={{ paddingTop: 0 }}>
+        <List className={classes.ticketsList}>
           {ticketsList.length === 0 && !loading ? (
             <div className={classes.noTicketsDiv}>
               <span className={classes.noTicketsTitle}>

@@ -169,14 +169,10 @@ const NewTicketModal = ({ modalOpen, onClose }) => {
 				</DialogTitle>
 				<FormControl>
 					<DialogContent dividers>
-
-
-
-
 						<Autocomplete
 							options={options}
 							loading={loading}
-							style={{ width: 300 }}
+							className={classes.autoComplete}
 							clearOnBlur
 							autoHighlight
 							freeSolo

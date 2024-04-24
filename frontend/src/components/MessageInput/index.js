@@ -107,6 +107,18 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     border: "none"
   },
+  messageInputWithImages: {
+    width: 0,
+    height: 0,
+  },
+  switchMessageSignature: {
+    marginRight: 7,
+    color: "gray",
+  },
+  switchMessageSignatureMobile: {
+    marginRight: 7,
+    color: "primary",
+  },
   sendMessageIcons: {
     color: theme.palette.text.primary,
   },
@@ -489,7 +501,7 @@ const MessageInput = ({ ticketStatus }) => {
               })}
             </List>
             <InputBase
-              style={{ width: "0", height: "0" }}
+              className={classes.messageInputWithImages}
               inputRef={function (input) {
                 if (input != null) {
                   input.focus();
@@ -571,7 +583,7 @@ const MessageInput = ({ ticketStatus }) => {
               </IconButton>
             </label>
             <FormControlLabel
-              style={{ marginRight: 7, color: "primary" }}
+              className={classes.switchMessageSignatureMobile}
               label={i18n.t("messagesInput.signMessage")}
               labelPlacement="start"
               control={
@@ -633,7 +645,7 @@ const MessageInput = ({ ticketStatus }) => {
               </MenuItem>
               <MenuItem onClick={handleMenuItemClick}>
                 <FormControlLabel
-                  style={{ marginRight: 7, color: "gray" }}
+                  className={classes.switchMessageSignature}
                   label={i18n.t("messagesInput.signMessage")}
                   labelPlacement="start"
                   control={

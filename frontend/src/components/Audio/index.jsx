@@ -1,9 +1,17 @@
-import { Button } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import React, { useRef, useEffect, useState } from "react";
 
 const LS_NAME = "audioMessageRate";
 
+const useStyles = makeStyles(theme => ({
+	buttonRate: {
+		marginLeft: "5px", 
+    marginTop: "-45px",
+	},
+}));
+
 const Audio = ({ url }) => {
+  const classes = useStyles();
   const audioRef = useRef(null);
   const [audioRate, setAudioRate] = useState(
     parseFloat(localStorage.getItem(LS_NAME) || "1")
@@ -70,7 +78,7 @@ const Audio = ({ url }) => {
       </audio>
       {showButtonRate && (
         <Button
-          style={{ marginLeft: "5px", marginTop: "-45px" }}
+          className={classes.buttonRate}
           onClick={toggleRate}
         >
           {audioRate}x

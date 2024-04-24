@@ -1,8 +1,15 @@
 import React from "react";
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+	reactECharts: {
+    height: 400
+  }
+}));
 
 const QueueChart = ({ tickets, loading }) => {
+  const classes = useStyles();
   const theme = useTheme();
   var updateMapper = (conversas) => {
     const queues = conversas.reduce((acc, curr) => {
@@ -72,7 +79,7 @@ const QueueChart = ({ tickets, loading }) => {
     <>
       <ReactECharts
         option={updateMapper(tickets)}
-        style={{ height: 400 }}
+        className={classes.reactECharts}
         showLoading={loading}
       />
     </>

@@ -105,9 +105,13 @@ const useStyles = makeStyles((theme) => ({
   csvbtn: {
     textDecoration: "none",
   },
+  avatarCell: {
+    paddingRight: 0,
+  },
   avatar: {
     width: "50px",
     height: "50px",
+    borderRadius: "25%",
   },
 }));
 
@@ -262,12 +266,11 @@ const Contacts = () => {
       <ConfirmationModal
         title={
           deletingContact
-            ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${
-                deletingContact.name
-              }?`
+            ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${deletingContact.name
+            }?`
             : deletingAllContact
-            ? `${i18n.t("contacts.confirmationModal.deleteAllTitle")}`
-            : `${i18n.t("contacts.confirmationModal.importTitle")}`
+              ? `${i18n.t("contacts.confirmationModal.deleteAllTitle")}`
+              : `${i18n.t("contacts.confirmationModal.importTitle")}`
         }
         open={confirmOpen}
         onClose={setConfirmOpen}
@@ -275,15 +278,15 @@ const Contacts = () => {
           deletingContact
             ? handleDeleteContact(deletingContact.id)
             : deletingAllContact
-            ? handleDeleteAllContact(deletingAllContact)
-            : handleimportContact()
+              ? handleDeleteAllContact(deletingAllContact)
+              : handleimportContact()
         }
       >
         {deletingContact
           ? `${i18n.t("contacts.confirmationModal.deleteMessage")}`
           : deletingAllContact
-          ? `${i18n.t("contacts.confirmationModal.deleteAllMessage")}`
-          : `${i18n.t("contacts.confirmationModal.importMessage")}`}
+            ? `${i18n.t("contacts.confirmationModal.deleteAllMessage")}`
+            : `${i18n.t("contacts.confirmationModal.importMessage")}`}
       </ConfirmationModal>
       <MainHeader>
         <div className={classes.title}>
@@ -393,7 +396,7 @@ const Contacts = () => {
             <>
               {contacts.map((contact) => (
                 <TableRow key={contact.id}>
-                  <TableCell style={{ paddingRight: 0 }}>
+                  <TableCell className={classes.avatarCell}>
                     {
                       <Avatar
                         src={contact.profilePicUrl}

@@ -289,6 +289,23 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 0,
     boxShadow: "0 1px 1px #b3b3b3",
   },
+  messageDivider: {
+    marginTop: 16
+  },
+  dailyTimestamps: {
+    float: "left",
+    clear: "both"
+  },
+  tagsContainer: {
+    position: "absolute",
+    top: 0,
+    zIndex: 99,
+  },
+  tag: {
+    marginRight: 5,
+    color: "#ffff",
+    fontWeight: "bold",
+  }
 }));
 
 const reducer = (state, action) => {
@@ -596,7 +613,7 @@ const MessagesList = ({ ticketId, isGroup, tags }) => {
         <div
           key={`ref-${message.createdAt}`}
           ref={lastMessageRef}
-          style={{ float: "left", clear: "both" }}
+          className={classes.dailyTimestamps}
         />
       );
     }
@@ -625,7 +642,7 @@ const MessagesList = ({ ticketId, isGroup, tags }) => {
 
       if (messageUser !== previousMessageUser) {
         return (
-          <span style={{ marginTop: 16 }} key={`divider-${message.id}`}></span>
+          <span className={classes.messageDivider} key={`divider-${message.id}`}></span>
         );
       }
     }
@@ -852,27 +869,19 @@ const MessagesList = ({ ticketId, isGroup, tags }) => {
         onScroll={handleScroll}
       >
         <div
-          style={{
-            position: "absolute",
-            top: 0,
-            zIndex: 99,
-          }}
+          className={classes.tagsContainer}
         >
           {tags != null
             ? tags.map((tag) => {
-                return (
-                  <Chip
-                    label={tag.name ?? ""}
-                    size="small"
-                    style={{
-                      background: tag.color,
-                      marginRight: 5,
-                      color: "#ffff",
-                      fontWeight: "bold",
-                    }}
-                  />
-                );
-              })
+              return (
+                <Chip
+                  label={tag.name ?? ""}
+                  size="small"
+                  style={{ background: tag.color }}
+                  className={classes.tag}
+                />
+              );
+            })
             : null}
         </div>
 

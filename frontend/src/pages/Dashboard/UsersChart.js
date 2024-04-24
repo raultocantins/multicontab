@@ -1,8 +1,15 @@
 import React from "react";
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+	reactECharts: {
+    height: 400
+  }
+}));
 
 const UsersChart = ({ tickets, loading }) => {
+  const classes = useStyles();
   const theme = useTheme();
 
   const corComOpacidade = (corHex, opacidade) => {
@@ -74,7 +81,7 @@ const UsersChart = ({ tickets, loading }) => {
   return (
     <ReactECharts
       option={updateMapper(tickets)}
-      style={{ height: 400 }}
+      className={classes.reactECharts}
       opts={{ renderer: "svg" }}
       showLoading={loading}
     />

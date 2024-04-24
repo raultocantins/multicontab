@@ -5,6 +5,9 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
+	tableCell: {
+		paddingRight: 0,
+	},
 	customTableCell: {
 		display: "flex",
 		alignItems: "center",
@@ -19,7 +22,7 @@ const TableRowSkeleton = ({ avatar, columns }) => {
 			<TableRow>
 				{avatar && (
 					<>
-						<TableCell style={{ paddingRight: 0 }}>
+						<TableCell className={classes.tableCell}>
 							<Skeleton
 								animation="wave"
 								variant="circle"

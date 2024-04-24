@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useTheme } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
 
 import {
   CartesianGrid,
@@ -13,7 +13,38 @@ import {
 
 import { startOfHour, parseISO, format } from "date-fns";
 
+const useStyles = makeStyles(theme => ({
+  customTooltip: {
+    backgroundColor: "#333333ff",
+    borderRadius: "4px",
+    outline: "none",
+  },
+  payload: {
+    display: "inline-block",
+    padding: 10
+  },
+  payloadLabel: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: "13px",
+  },
+  payloadValue: {
+    color: "white",
+    fontWeight: "400",
+    fontSize: "13px",
+  },
+  divider: {
+    width: "0",
+    height: "0",
+    borderLeft: "5px solid transparent",
+    marginLeft: "35px",
+    borderRight: "5px solid transparent",
+    borderTop: "5px solid #333333ff",
+  }
+}));
+
 const TimeChart = ({ tickets }) => {
+  const classes = useStyles();
   const theme = useTheme();
   const [chartData, setChartData] = useState([
     { time: "00:00", amount: 0 },
@@ -47,28 +78,16 @@ const TimeChart = ({ tickets }) => {
       return (
         <div>
           <div
-            style={{
-              backgroundColor: "#333333ff",
-              borderRadius: "4px",
-              outline: "none",
-            }}
+            className={classes.customTooltip}
           >
             <div>
               {payload.map((pld) => (
-                <div style={{ display: "inline-block", padding: 10 }} key={pld}>
+                <div className={classes.payload} key={pld}>
                   <div
-                    style={{
-                      color: "white",
-                      fontWeight: "600",
-                      fontSize: "13px",
-                    }}
+                    className={classes.payloadLabel}
                   >{`${label}`}</div>
                   <div
-                    style={{
-                      color: "white",
-                      fontWeight: "400",
-                      fontSize: "13px",
-                    }}
+                    className={classes.payloadValue}
                   >
                     Quantidade: {pld.value}
                   </div>
@@ -78,14 +97,7 @@ const TimeChart = ({ tickets }) => {
           </div>
 
           <div
-            style={{
-              width: "0",
-              height: "0",
-              borderLeft: "5px solid transparent",
-              marginLeft: "35px",
-              borderRight: "5px solid transparent",
-              borderTop: "5px solid #333333ff",
-            }}
+            className={classes.divider}
           ></div>
         </div>
       );

@@ -3,13 +3,24 @@ import { useHistory } from "react-router-dom";
 import toastError from "../../errors/toastError";
 import api from "../../services/api";
 
-import { Avatar, Button, Divider, Grid, Typography } from "@material-ui/core";
+import { Avatar, Button, Divider, Grid, Typography, makeStyles } from "@material-ui/core";
 
 // import { AuthContext } from "../../context/Auth/AuthContext";
 
 import NewTicketModalPageContact from "../../components/NewTicketModalPageContact";
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    minWidth: "250px"
+  },
+  selectedContactData: {
+    marginTop: "12px",
+    marginLeft: "10px"
+  }
+}));
+
 const VcardPreview = ({ contact, numbers }) => {
+  const classes = useStyles();
   const history = useHistory();
   // const { user } = useContext(AuthContext);
   const [newTicketModalOpen, setNewTicketModalOpen] = useState(false);
@@ -63,9 +74,7 @@ const VcardPreview = ({ contact, numbers }) => {
   return (
     <>
       <div
-        style={{
-          minWidth: "250px",
-        }}
+        className={classes.container}
       >
         <Grid container spacing={1}>
           <NewTicketModalPageContact
@@ -80,7 +89,7 @@ const VcardPreview = ({ contact, numbers }) => {
           </Grid>
           <Grid item xs={9}>
             <Typography
-              style={{ marginTop: "12px", marginLeft: "10px" }}
+              className={classes.selectedContactData}
               variant="subtitle1"
               color="primary"
               gutterBottom
