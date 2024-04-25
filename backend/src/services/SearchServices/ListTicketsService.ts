@@ -1,12 +1,12 @@
 import { startOfDay, endOfDay, parseISO } from "date-fns";
-
-import { Op, Filterable, Includeable } from "sequelize";
+import { Op, Filterable, fn, where, col, Includeable } from "sequelize";
 import AppError from "../../errors/AppError";
 import Ticket from "../../models/Ticket";
 
 import User from "../../models/User";
 import Queue from "../../models/Queue";
 import Contact from "../../models/Contact";
+import Message from "../../models/Message";
 
 interface Response {
   tickets: Ticket[];
@@ -20,6 +20,7 @@ interface Request {
   selectedContact?: string;
   startDate?: string;
   endDate?: string;
+  keyword?: string;
 }
 
 const ListTicketsService = async ({
@@ -28,7 +29,8 @@ const ListTicketsService = async ({
   selectedStatus,
   selectedContact,
   startDate,
-  endDate
+  endDate,
+  keyword
 }: Request): Promise<Response | undefined> => {
   let includeCondition: Includeable[];
   let whereCondition: Filterable["where"];
@@ -62,6 +64,41 @@ const ListTicketsService = async ({
     };
   }
 
+  if (keyword) {
+    const sanitizedSearchParam = keyword.toLocaleLowerCase().trim();
+
+    includeCondition = [
+      ...includeCondition,
+      {
+        model: Message,
+        as: "messages",
+        attributes: ["id", "body"],
+        where: {
+          body: where(
+            fn("LOWER", col("body")),
+            "LIKE",
+            `%${sanitizedSearchParam}%`
+          )
+        },
+        required: false,
+        duplicating: false
+      }
+    ];
+
+    whereCondition = {
+      ...whereCondition,
+      [Op.or]: [
+        {
+          "$message.body$": where(
+            fn("LOWER", col("body")),
+            "LIKE",
+            `%${sanitizedSearchParam}%`
+          )
+        }
+      ]
+    };
+  }
+
   if (selectedUser) {
     whereCondition = { ...whereCondition, userId: selectedUser };
   }
@@ -78,10 +115,6 @@ const ListTicketsService = async ({
     whereCondition = { ...whereCondition, contactId: selectedContact };
   }
 
-  whereCondition = {
-    ...whereCondition,
-    isGroup: { [Op.or]: [false, null] }
-  };
   try {
     const tickets = await Ticket.findAll({
       include: includeCondition,
