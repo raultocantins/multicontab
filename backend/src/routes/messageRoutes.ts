@@ -18,6 +18,13 @@ messageRoutes.post(
   MessageController.store
 );
 
+messageRoutes.post(
+  "/messages/contact/:ticketId",
+  isAuth,
+  MessageController.storeContact
+);
+
+
 messageRoutes.delete("/messages/:messageId", isAuth, MessageController.remove);
 
 export default messageRoutes;
