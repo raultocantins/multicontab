@@ -122,6 +122,54 @@ const verifyRevoked = async (msgBody?: string): Promise<void> => {
   }
 };
 
+
+const verifyEditMessage = async (message: WbotMessage, newBody: string, prevBody: string): Promise<void> => {
+  await new Promise(r => setTimeout(r, 500));
+
+  const io = getIO();
+
+  if (message === undefined) {
+    return;
+  }
+
+  try {
+    const message = await Message.findOne({
+      where: {
+        body: prevBody
+      }
+    });
+
+    if (!message) {
+      return;
+    }
+
+    if (message) {
+      await Message.update(
+        { body: newBody },
+        {
+          where: { id: message.id }
+        }
+      );
+
+      const messageUpdated = await Message.findOne({
+        where: { id: message.id }
+      });
+
+      if (!messageUpdated) {
+        return;
+      }
+
+      io.to(messageUpdated.ticketId.toString()).emit("appMessage", {
+        action: "update",
+        message: messageUpdated
+      });
+    }
+  } catch (err) {
+    Sentry.captureException(err);
+    logger.error(`Error Message Edit. Err: ${err}`);
+  }
+};
+
 const verifyMediaMessage = async (
   msg: WbotMessage,
   ticket: Ticket,
@@ -213,11 +261,10 @@ const verifyMediaMessage = async (
 const prepareLocation = (msg: WbotMessage): WbotMessage => {
   const gmapsUrl = `https://maps.google.com/maps?q=${msg.location.latitude}%2C${msg.location.longitude}&z=17`;
   msg.body = `data:image/png;base64,${msg.body}|${gmapsUrl}`;
-  msg.body += `|${
-    msg.location.options
+  msg.body += `|${msg.location.options
       ? msg.location.options
       : `${msg.location.latitude}, ${msg.location.longitude}`
-  }`;
+    }`;
   return msg;
 };
 
@@ -334,9 +381,8 @@ const verifyQueue = async (
     queues.forEach((queue, index) => {
       if (queue.startWork && queue.endWork) {
         if (isDisplay) {
-          options += `*${index + 1}* - ${queue.name} das ${
-            queue.startWork
-          } as ${queue.endWork}\n`;
+          options += `*${index + 1}* - ${queue.name} das ${queue.startWork
+            } as ${queue.endWork}\n`;
         } else {
           options += `*${index + 1}* - ${queue.name}\n`;
         }
@@ -674,6 +720,12 @@ const wbotMessageListener = async (wbot: Session): Promise<void> => {
     const msgBody: string | undefined = before?.body;
     if (msgBody !== undefined) {
       verifyRevoked(msgBody || "");
+    }
+  });
+
+  wbot.on("message_edit", async (message, newBody, prevBody) => {
+    if (prevBody !== undefined) {
+      verifyEditMessage(message, newBody.toString() ?? '', prevBody.toString() ?? '');
     }
   });
 };
