@@ -262,8 +262,8 @@ const prepareLocation = (msg: WbotMessage): WbotMessage => {
   const gmapsUrl = `https://maps.google.com/maps?q=${msg.location.latitude}%2C${msg.location.longitude}&z=17`;
   msg.body = `data:image/png;base64,${msg.body}|${gmapsUrl}`;
   msg.body += `|${msg.location.options
-      ? msg.location.options
-      : `${msg.location.latitude}, ${msg.location.longitude}`
+    ? msg.location.options
+    : `${msg.location.latitude}, ${msg.location.longitude}`
     }`;
   return msg;
 };
@@ -373,39 +373,43 @@ const verifyQueue = async (
       await verifyMessage(sentMessage, ticket, contact);
     }
   } else {
-    let options = "";
+    if (!ticket.greetingSent) {
+      let options = "";
+      const chat = await msg.getChat();
+      await chat.sendStateTyping();
 
-    const chat = await msg.getChat();
-    await chat.sendStateTyping();
-
-    queues.forEach((queue, index) => {
-      if (queue.startWork && queue.endWork) {
-        if (isDisplay) {
-          options += `*${index + 1}* - ${queue.name} das ${queue.startWork
-            } as ${queue.endWork}\n`;
+      queues.forEach((queue, index) => {
+        if (queue.startWork && queue.endWork) {
+          if (isDisplay) {
+            options += `*${index + 1}* - ${queue.name} das ${queue.startWork
+              } as ${queue.endWork}\n`;
+          } else {
+            options += `*${index + 1}* - ${queue.name}\n`;
+          }
         } else {
           options += `*${index + 1}* - ${queue.name}\n`;
         }
-      } else {
-        options += `*${index + 1}* - ${queue.name}\n`;
-      }
-    });
+      });
 
-    const body = formatBody(`\u200e${greetingMessage}\n\n${options}`, ticket);
+      const body = formatBody(`\u200e${greetingMessage}\n\n${options}`, ticket);
 
-    const debouncedSentMessage = debounce(
-      async () => {
-        const sentMessage = await wbot.sendMessage(
-          `${contact.number}@c.us`,
-          body
-        );
-        verifyMessage(sentMessage, ticket, contact);
-      },
-      3000,
-      ticket.id
-    );
+      const debouncedSentMessage = debounce(
+        async () => {
+          const sentMessage = await wbot.sendMessage(
+            `${contact.number}@c.us`,
+            body
+          );
+          verifyMessage(sentMessage, ticket, contact);
+        },
+        3000,
+        ticket.id
+      );
 
-    debouncedSentMessage();
+      debouncedSentMessage();
+      await ticket.update({
+        greetingSent: true
+      });
+    }
   }
 };
 
