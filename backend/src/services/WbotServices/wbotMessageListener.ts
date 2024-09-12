@@ -30,7 +30,7 @@ import { debounce } from "../../helpers/Debounce";
 import UpdateTicketService from "../TicketServices/UpdateTicketService";
 import CreateContactService from "../ContactServices/CreateContactService";
 import formatBody from "../../helpers/Mustache";
-
+import { Mutex } from "async-mutex";
 ffmpeg.setFfmpegPath("/usr/bin/ffmpeg");
 
 const request = require("request");
@@ -40,7 +40,7 @@ interface Session extends Client {
 }
 
 const writeFileAsync = promisify(writeFile);
-
+const mutex = new Mutex();
 const verifyContact = async (msgContact: WbotContact): Promise<Contact> => {
   const profilePicUrl = await msgContact.getProfilePicUrl();
 
@@ -530,13 +530,16 @@ const handleMessage = async (
     const unreadMessages = msg.fromMe ? 0 : chat.unreadCount;
 
     const contact = await verifyContact(msgContact);
+    let ticket = await mutex.runExclusive(async () => {
+      const result = await FindOrCreateTicketService(
+        contact,
+        wbot.id!,
+        unreadMessages,
+        groupContact
+      );
+      return result;
+    });
 
-    let ticket = await FindOrCreateTicketService(
-      contact,
-      wbot.id!,
-      unreadMessages,
-      groupContact
-    );
 
     if (
       unreadMessages === 0 &&
@@ -545,12 +548,16 @@ const handleMessage = async (
     )
       return;
 
-    ticket = await FindOrCreateTicketService(
-      contact,
-      wbot.id!,
-      unreadMessages,
-      groupContact
-    );
+    ticket = await mutex.runExclusive(async () => {
+      const result = await FindOrCreateTicketService(
+        contact,
+        wbot.id!,
+        unreadMessages,
+        groupContact
+      );
+      return result;
+    });
+
 
     if (msg.hasMedia) {
       await verifyMediaMessage(msg, ticket, contact);
